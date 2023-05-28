@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -18,6 +19,7 @@ import androidx.compose.material.ButtonElevation
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -25,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material.icons.outlined.ArrowBackIos
 import androidx.compose.material.icons.outlined.MoreVert
+import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -59,7 +62,9 @@ fun DetailsPage(modifier : Modifier = Modifier) {
             .padding(5.dp)) {
             //App logo, name, publisher and tags
             Row {
-                    Card(modifier = modifier.size(120.dp).padding(10.dp),
+                    Card(modifier = modifier
+                        .size(120.dp)
+                        .padding(10.dp),
                     shape = RoundedCornerShape(20.dp)
                     ) {
                         Image(painter = painterResource(id = R.drawable.icon),
@@ -113,7 +118,9 @@ fun DetailsPage(modifier : Modifier = Modifier) {
                 }
             //app downloads, reviews and size
             Row(horizontalArrangement = Arrangement.Center,
-                modifier = modifier.fillMaxWidth().padding(vertical = 10.dp)) {
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 10.dp)) {
                 Box(){
                     Text(text = "12 MB",
                         fontSize = 14.sp,
@@ -156,7 +163,7 @@ fun DetailsPage(modifier : Modifier = Modifier) {
             //Download button
             Button(onClick = { },
             modifier = modifier
-                .padding(5.dp)
+                .padding(10.dp)
                 .fillMaxWidth(),
             shape = RoundedCornerShape(10.dp),
             colors = ButtonDefaults.buttonColors(
@@ -171,6 +178,25 @@ fun DetailsPage(modifier : Modifier = Modifier) {
                     modifier = modifier.padding(3.dp)
                 )
             }
+
+            //Video card
+            Box(modifier = modifier.padding(10.dp)) {
+                Card(shape = RoundedCornerShape(20.dp),
+                    modifier = modifier.fillMaxWidth().height(200.dp),
+                colors = CardDefaults.cardColors(
+                    contentColor = Color.Gray
+                )) {
+                    Icon(imageVector = Icons.Filled.PlayArrow,
+                        contentDescription = "play video",
+                        modifier = modifier.padding(20.dp))
+                }
+            }
+
+            //Decription of the app
+            Text(text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiut enim ad minim veniam... Read More. ",
+            fontSize = 14.sp,
+            color = Color.Gray,
+            modifier = modifier.padding(20.dp))
         }
     }
 }
