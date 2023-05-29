@@ -2,6 +2,7 @@ package com.expeknow.store
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,7 +13,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.ButtonElevation
@@ -41,6 +45,7 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
@@ -49,17 +54,27 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 
 @ExperimentalMaterial3Api
 @Composable
 fun DetailsPage(modifier : Modifier = Modifier) {
 
+    val app_images = ArrayList<Int>()
+    app_images.add(R.drawable.home_window)
+    app_images.add(R.drawable.details_window)
+    app_images.add(R.drawable.image_window)
+    app_images.add(R.drawable.search_window)
+    app_images.add(R.drawable.saved_window)
+    val scrollState = rememberScrollState()
 
-    Scaffold(topBar = { TopBar()} ) {
+    Scaffold(topBar = { TopBar()},
+    ) {
         Column(modifier = modifier
             .padding(it)
-            .padding(5.dp)) {
+            .padding(5.dp)
+            .verticalScroll(scrollState)) {
             //App logo, name, publisher and tags
             Row {
                     Card(modifier = modifier
@@ -182,7 +197,9 @@ fun DetailsPage(modifier : Modifier = Modifier) {
             //Video card
             Box(modifier = modifier.padding(10.dp)) {
                 Card(shape = RoundedCornerShape(20.dp),
-                    modifier = modifier.fillMaxWidth().height(200.dp),
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .height(200.dp),
                 colors = CardDefaults.cardColors(
                     contentColor = Color.Gray
                 )) {
@@ -197,6 +214,84 @@ fun DetailsPage(modifier : Modifier = Modifier) {
             fontSize = 14.sp,
             color = Color.Gray,
             modifier = modifier.padding(20.dp))
+
+            //App screenshots
+            LazyRow(modifier = modifier.padding(0.dp)) {
+                items(app_images.size){
+                    val index = it
+                    Card(
+                        modifier
+                            .padding(5.dp)
+                            .height(333.dp)
+                            .width(150.dp),
+                    shape = RoundedCornerShape(10.dp)
+                    ) {
+                        Image(painter = painterResource(id = app_images[index])
+                            , contentDescription = "", contentScale = ContentScale.Crop)
+                    }
+                }
+            }
+
+            //other picks
+            Row(
+                Modifier
+                    .padding(vertical = 0.dp)
+            ) {
+                Column() {
+
+                    Text(text = "Other Apps",
+                        fontSize = 25.sp,
+                        fontFamily = FontFamily.SansSerif,
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 0.1.sp,
+                        modifier = modifier.padding(top = 20.dp, start = 10.dp, bottom = 6.dp)
+                    )
+                    LazyRow() {
+                        val list = Apps()
+                        items (list.size){
+                                index ->
+                            Column(Modifier.padding(6.dp)) {
+                                Box(
+                                    modifier
+                                        .width(100.dp)
+                                        .height(100.dp)) {
+                                    Card(shape = RoundedCornerShape(20.dp),
+                                        elevation = CardDefaults.cardElevation(5.dp)) {
+                                        Image(painter = painterResource(id = list[index].appLogo),
+                                            contentDescription = "",
+                                            contentScale = ContentScale.Crop
+                                        )
+                                    }
+
+                                }
+                                Text(text = list[index].appName,
+                                    textAlign = TextAlign.Center,
+                                    modifier = modifier.padding(6.dp),
+                                    fontSize = 14.sp
+                                )
+
+                            }
+
+
+                        }
+                    }
+
+                }
+            }
+
+            //End credits
+
+            Box(modifier = modifier
+                .padding(10.dp)
+                .fillMaxWidth()
+                .align(CenterHorizontally)){
+                Text(text = "Expeknow Store",
+                color =  Color.LightGray,
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 10.sp,
+                letterSpacing = 2.sp
+                )
+            }
         }
     }
 }
