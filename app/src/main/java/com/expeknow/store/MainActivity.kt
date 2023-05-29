@@ -74,7 +74,8 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val scrollState : ScrollState = rememberScrollState()
-                    DetailsPage()
+//                    DetailsPage()
+                    profilePage()
                 }
             }
         }
