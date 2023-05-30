@@ -65,6 +65,9 @@ dependencies {
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
     debugImplementation 'androidx.compose.ui:ui-tooling'
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
+    def nav_compose_version = "2.6.0-alpha09"
+    //noinspection GradleDependency
+    implementation "androidx.navigation:navigation-compose:$nav_compose_version"
 }
 
 configurations.implementation {

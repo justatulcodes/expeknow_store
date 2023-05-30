@@ -1,13 +1,10 @@
-package com.expeknow.store
+package com.expeknow.store.ui.windows
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,28 +16,19 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.ButtonElevation
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material.icons.outlined.ArrowBackIos
 import androidx.compose.material.icons.outlined.MoreVert
-import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.Divider
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -48,18 +36,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
+import androidx.navigation.NavController
+import com.expeknow.store.Apps
+import com.expeknow.store.NavigationScreens
+import com.expeknow.store.R
 
 
 @ExperimentalMaterial3Api
 @Composable
-fun DetailsPage(modifier : Modifier = Modifier) {
+fun DetailsPage(modifier : Modifier = Modifier, navController: NavController) {
 
     val app_images = ArrayList<Int>()
     app_images.add(R.drawable.home_window)
@@ -69,7 +58,7 @@ fun DetailsPage(modifier : Modifier = Modifier) {
     app_images.add(R.drawable.saved_window)
     val scrollState = rememberScrollState()
 
-    Scaffold(topBar = { TopBar()},
+    Scaffold(topBar = { TopBar(navController) },
     ) {
         Column(modifier = modifier
             .padding(it)
@@ -298,19 +287,24 @@ fun DetailsPage(modifier : Modifier = Modifier) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar() {
+fun TopBar(navController: NavController) {
     CenterAlignedTopAppBar(
         title = { Text(text = "")},
         navigationIcon = {
-            Icon(imageVector = Icons.Outlined.ArrowBackIos,
-                contentDescription = "",
-                modifier = Modifier
-                    .size(25.dp)
-                    .padding(start = 8.dp)
+            IconButton(
+                onClick = {navController.popBackStack()} ) {
+                Icon(
+                    imageVector = Icons.Outlined.ArrowBackIos,
+                    contentDescription = "",
+                    modifier = Modifier
+                        .size(25.dp)
+                        .padding(start = 8.dp)
                 )
+            }
         },
         actions = {
-            IconButton(onClick = { }) {
+            IconButton(onClick = {
+            }) {
                 Icon(
                     imageVector = Icons.Outlined.MoreVert,
                     contentDescription = "more options"
