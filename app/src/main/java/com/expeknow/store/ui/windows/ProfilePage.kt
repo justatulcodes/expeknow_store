@@ -23,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -30,13 +31,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.expeknow.store.R
+import com.expeknow.store.widgets.TopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfilePage(modifier : Modifier = Modifier, navController: NavController) {
+fun ProfilePage(navController: NavController) {
     Scaffold(
         topBar = {
-            topAppBar(navController)
+            TopBar(navController)
         }
     ) {
         Column(
@@ -44,7 +46,7 @@ fun ProfilePage(modifier : Modifier = Modifier, navController: NavController) {
                 .padding(it)) {
 
             //profile Image
-            Card(modifier = modifier
+            Card(modifier = Modifier
                 .padding(vertical = 30.dp, horizontal = 20.dp)
                 .size(150.dp),
             shape = RoundedCornerShape(30.dp)
@@ -56,83 +58,38 @@ fun ProfilePage(modifier : Modifier = Modifier, navController: NavController) {
 
             //Name
             Text(text = "Atul Kumar",
-            modifier = modifier.padding(horizontal = 20.dp),
+            modifier = Modifier.padding(horizontal = 20.dp),
             fontSize = 50.sp,
             fontWeight = FontWeight.Black)
 
             //description
             Text(text = "A self taught programmer trying to be an Android Developer.",
-            modifier.padding(horizontal = 20.dp, vertical = 10.dp),
+                Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
             fontSize = 16.sp,
             color = Color.Gray)
-        
-            
+
             //Social links
             Row (Modifier.padding(horizontal = 10.dp)){
-                Card(shape = RoundedCornerShape(20.dp),
-                    modifier = modifier.padding(horizontal = 10.dp, vertical = 20.dp)) {
-                    Icon(imageVector = Icons.Rounded.Mail, contentDescription = "mail",
-                    modifier = modifier
-                        .size(50.dp)
-                        .padding(10.dp))
-                }
-                Card(shape = RoundedCornerShape(20.dp),
-                    modifier = modifier.padding(horizontal = 10.dp, vertical = 20.dp)) {
-                    Icon(imageVector = Icons.Rounded.Code, contentDescription = "Github",
-                    modifier = modifier
-                        .size(50.dp)
-                        .padding(10.dp))
-                }
-                Card(shape = RoundedCornerShape(20.dp),
-                    modifier = modifier.padding(horizontal = 10.dp, vertical = 20.dp)) {
-                    Icon(imageVector = Icons.Rounded.PhotoCamera, contentDescription = "instagram",
-                    modifier = modifier
-                        .size(50.dp)
-                        .padding(10.dp))
-                }
-                Card(shape = RoundedCornerShape(20.dp),
-                    modifier = modifier.padding(horizontal = 10.dp, vertical = 20.dp)) {
-                    Icon(imageVector = Icons.Rounded.Work, contentDescription = "LinkedIn",
-                    modifier = modifier
-                        .size(50.dp)
-                        .padding(10.dp))
-                }
+                SocialIcons(icon = Icons.Rounded.Mail, contentDescription = "mail")
+                SocialIcons(icon = Icons.Rounded.Code, contentDescription = "github")
+                SocialIcons(icon = Icons.Rounded.PhotoCamera, contentDescription = "instagram")
+                SocialIcons(icon = Icons.Rounded.Work, contentDescription = "linkedin")
             }
-
-
-
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
-fun topAppBar(navController: NavController) {
-    CenterAlignedTopAppBar(
-        title = { Text(text = "")},
-        navigationIcon = {
-            IconButton(
-                onClick = {navController.popBackStack()} ) {
-                    Icon(
-                        imageVector = Icons.Outlined.ArrowBackIos,
-                        contentDescription = "",
-                        modifier = Modifier
-                            .size(25.dp)
-                            .padding(start = 8.dp)
-                    )
-                }
-
-        },
-        actions = {
-            IconButton(onClick = {
-            }) {
-                Icon(
-                    imageVector = Icons.Outlined.MoreVert,
-                    contentDescription = "more options"
-                )
-            }
-        }
-    )
-
+fun SocialIcons(icon: ImageVector, contentDescription: String) {
+    Card(shape = RoundedCornerShape(20.dp),
+        modifier = Modifier.padding(horizontal = 10.dp, vertical = 20.dp)) {
+        Icon(imageVector = icon, contentDescription = contentDescription,
+            modifier = Modifier
+                .size(50.dp)
+                .padding(10.dp))
+    }
 }
+
+
 

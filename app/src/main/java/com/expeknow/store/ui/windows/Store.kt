@@ -1,6 +1,5 @@
 package com.expeknow.store.ui.windows
 
-import android.widget.ImageButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
@@ -47,20 +46,22 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.expeknow.store.Apps
 import com.expeknow.store.NavigationScreens
 import com.expeknow.store.R
+import com.expeknow.store.SampleData
+import com.expeknow.store.widgets.AppListRow
+import com.expeknow.store.widgets.AppListRowHeader
 
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class,
     ExperimentalMaterialApi::class
 )
 @Composable
-fun Store(modifier: Modifier = Modifier, scrollState: ScrollState, navController: NavController) {
+fun Store(scrollState: ScrollState, navController: NavController) {
 
 
-    Scaffold(modifier.fillMaxSize()) {
+    Scaffold(Modifier.fillMaxSize()) {
         Column(
             Modifier
                 .fillMaxWidth()
@@ -70,10 +71,10 @@ fun Store(modifier: Modifier = Modifier, scrollState: ScrollState, navController
             
             //Search bar row
             Row(
-                modifier.padding(10.dp)
+                Modifier.padding(15.dp)
             ) {
                 Card(shape = RoundedCornerShape(50.dp),
-                    modifier = modifier
+                    modifier = Modifier
                         .weight(1f)
                         .padding(end = 10.dp)
                 ) {
@@ -81,7 +82,7 @@ fun Store(modifier: Modifier = Modifier, scrollState: ScrollState, navController
                 }
 
                 Card(shape = RoundedCornerShape(50.dp),
-                    modifier = modifier
+                    modifier = Modifier
                         .size(50.dp)
                         .padding(0.dp),
                     onClick = { navController.navigate(NavigationScreens.Profile.route)}) {
@@ -94,73 +95,18 @@ fun Store(modifier: Modifier = Modifier, scrollState: ScrollState, navController
 
 
             //Developer's Choice
-            Row(
-                Modifier
-                    .padding(top = 20.dp)
-            ) {
-                Column() {
-                    Text(text = "Developer's Choice",
-                        fontSize = 25.sp,
-                        fontFamily = FontFamily.SansSerif,
-                        fontWeight = FontWeight.Bold,
-                        letterSpacing = 0.sp,
-                        modifier = modifier.padding(start = 10.dp, bottom = 5.dp)
-                    )
-                    LazyRow() {
+            Row(Modifier.padding(top = 20.dp, bottom = 10.dp)) {
+                Column {
+                    AppListRowHeader(heading = "Developer's Choice",
+                        modifier = Modifier.padding(top = 20.dp))
+                    LazyRow {
                         val list = Apps()
                         items (list.size){
                                 index ->
-                            Column() {
-                                Box(
-                                    modifier
-                                        .width(280.dp)
-                                        .height(180.dp)
-                                        .padding(4.dp)
-                                        .clickable {
-                                            navController.navigate(NavigationScreens.Details.route)
-                                        }) {
-                                    Card(shape = RoundedCornerShape(20.dp),
-                                    ) {
-                                        Image(painter = painterResource(id = list[index].graphic),
-                                            contentDescription = "",
-                                            contentScale = ContentScale.Crop
-                                        )
-                                    }
-                                }
-
-                                Column(Modifier.padding(start = 12.dp)) {
-                                    Text(text = list[index].appName,
-                                        fontSize = 16.sp,
-                                        fontFamily = FontFamily.SansSerif,
-                                        fontWeight = FontWeight.SemiBold,
-                                    )
-                                    Row(Modifier.padding(start = 0.dp)) {
-
-                                        Text(text = "${list[index].size} MB",
-                                            fontSize = 12.sp,
-                                            fontFamily = FontFamily.SansSerif,
-                                            fontWeight = FontWeight.SemiBold,
-//                                        modifier = modifier.weight(1f),
-                                        )
-                                        Icon(imageVector = Icons.Filled.Star,
-                                            contentDescription = "",
-                                            tint = colorResource(id = R.color.star_color),
-                                            modifier = Modifier.size(16.dp))
-
-                                        Text(text = "${list[index].stars}",
-                                            fontSize = 12.sp,
-                                            fontFamily = FontFamily.SansSerif,
-                                            fontWeight = FontWeight.SemiBold,
-                                        )
-                                    }
-                                }
-
-
-
+                            Column {
+                                DevChoiceAppTemplate(navController = navController,
+                                    appData = list[index])
                             }
-
-
-
                         }
                     }
 
@@ -168,158 +114,68 @@ fun Store(modifier: Modifier = Modifier, scrollState: ScrollState, navController
             }
 
             //Newly Released Apps Section
-            Row(
-                Modifier
-                    .padding(vertical = 0.dp)
-            ) {
-                Column() {
-
-                    Text(text = "Newly Released Apps",
-                        fontSize = 25.sp,
-                        fontFamily = FontFamily.SansSerif,
-                        fontWeight = FontWeight.Bold,
-                        letterSpacing = 0.1.sp,
-                        modifier = modifier.padding(top = 20.dp, start = 10.dp, bottom = 6.dp)
-                    )
-                    LazyRow() {
-                        val list = Apps()
-                        items (list.size){
-                                index ->
-                            Column(Modifier.padding(6.dp)) {
-                                Box(
-                                    modifier
-                                        .width(100.dp)
-                                        .height(100.dp)
-                                        .clickable {
-                                            navController.navigate(NavigationScreens.Details.route)
-                                        }) {
-                                    Card(shape = RoundedCornerShape(20.dp),
-                                        onClick = { navController.navigate(NavigationScreens.Details.route)}) {
-                                        Image(painter = painterResource(id = list[index].appLogo),
-                                            contentDescription = "",
-                                            contentScale = ContentScale.Crop
-                                        )
-                                    }
-
-                                }
-                                Text(text = list[index].appName,
-                                    textAlign = TextAlign.Center,
-                                    modifier = modifier.padding(6.dp),
-                                    fontSize = 14.sp
-                                )
-
-                            }
-
-
-                        }
-                    }
-
-                }
-            }
+            AppListRow(appList = Apps(), heading = "Newly Released",
+                navController = navController)
 
             //Old Apps
-            Row(
-                Modifier
-                    .padding(vertical = 0.dp)
-            ) {
-                Column() {
-
-                    Text(text = "Old Apps",
-                        fontSize = 25.sp,
-                        fontFamily = FontFamily.SansSerif,
-                        fontWeight = FontWeight.Bold,
-                        letterSpacing = 0.1.sp,
-                        modifier = modifier.padding(top = 20.dp, start = 10.dp, bottom = 6.dp)
-                    )
-                    LazyRow() {
-                        val list = Apps()
-                        items (list.size){
-                                index ->
-                            Column(Modifier.padding(6.dp)) {
-                                Box(
-                                    modifier
-                                        .width(100.dp)
-                                        .height(100.dp)
-                                ) {
-                                    Card(shape = RoundedCornerShape(20.dp),
-                                        onClick = { navController.navigate(NavigationScreens.Details.route)}) {
-                                        Image(painter = painterResource(id = list[index].appLogo),
-                                            contentDescription = "",
-                                            contentScale = ContentScale.Crop
-                                        )
-                                    }
-
-                                }
-                                Text(text = list[index].appName,
-                                    textAlign = TextAlign.Center,
-                                    modifier = modifier.padding(6.dp),
-                                    fontSize = 14.sp
-                                )
-
-                            }
-
-
-                        }
-                    }
-
-                }
-            }
+            AppListRow(appList = Apps(), heading = "Old Apps",
+                navController = navController)
 
             //Under Development
-            Row(
-                Modifier
-                    .padding(vertical = 0.dp)
-            ) {
-                Column() {
-
-                    Text(text = "Under Development",
-                        fontSize = 25.sp,
-                        fontFamily = FontFamily.SansSerif,
-                        fontWeight = FontWeight.Bold,
-                        letterSpacing = 0.1.sp,
-                        modifier = modifier.padding(top = 20.dp, start = 10.dp, bottom = 6.dp)
-                    )
-                    LazyRow() {
-                        val list = Apps()
-                        items (list.size){
-                                index ->
-                            Column(Modifier.padding(6.dp)) {
-                                Box(
-                                    modifier
-                                        .width(100.dp)
-                                        .height(100.dp)
-                                        ) {
-                                    Card(shape = RoundedCornerShape(20.dp),
-                                        onClick = { navController.navigate(NavigationScreens.Details.route)}) {
-                                        Image(painter = painterResource(id = list[index].appLogo),
-                                            contentDescription = "",
-                                            contentScale = ContentScale.Crop
-                                        )
-                                    }
-
-                                }
-                                Text(text = list[index].appName,
-                                    textAlign = TextAlign.Center,
-                                    modifier = modifier.padding(6.dp),
-                                    fontSize = 14.sp
-                                )
-
-                            }
-
-
-                        }
-                    }
-
-                }
-            }
+            AppListRow(appList = Apps(), heading = "Under Development",
+                navController = navController)
 
         }
     }
 
 }
 
+@Composable
+fun DevChoiceAppTemplate(navController: NavController, appData: SampleData,
+                         modifier: Modifier= Modifier) {
+    Box(
+        modifier
+            .width(280.dp)
+            .height(180.dp)
+            .padding(4.dp)
+            .clickable {
+                navController.navigate(NavigationScreens.Details.route)
+            }) {
+        Card(shape = RoundedCornerShape(20.dp),
+        ) {
+            Image(painter = painterResource(id = appData.graphic),
+                contentDescription = "",
+                contentScale = ContentScale.Crop
+            )
+        }
+    }
 
+    Column(Modifier.padding(start = 12.dp)) {
+        Text(text = appData.appName,
+            fontSize = 16.sp,
+            fontFamily = FontFamily.SansSerif,
+            fontWeight = FontWeight.SemiBold,
+        )
+        Row(Modifier.padding(start = 0.dp)) {
 
+            Text(text = "${appData.size} MB",
+                fontSize = 12.sp,
+                fontFamily = FontFamily.SansSerif,
+                fontWeight = FontWeight.SemiBold,
+            )
+            Icon(imageVector = Icons.Filled.Star,
+                contentDescription = "stars",
+                tint = colorResource(id = R.color.star_color),
+                modifier = Modifier.size(16.dp))
+
+            Text(text = "{${appData.stars}",
+                fontSize = 12.sp,
+                fontFamily = FontFamily.SansSerif,
+                fontWeight = FontWeight.SemiBold,
+            )
+        }
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

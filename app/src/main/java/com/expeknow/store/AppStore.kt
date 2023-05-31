@@ -17,7 +17,7 @@ import com.expeknow.store.ui.windows.Store
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun AppStore(scrollState: ScrollState, navController: NavHostController) {
-    Scaffold() {
+    Scaffold {
         NavHost(navController = navController,
             startDestination = NavigationScreens.Store.route ) {
             composable(NavigationScreens.Store.route) {

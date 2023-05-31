@@ -44,11 +44,13 @@ import androidx.navigation.NavController
 import com.expeknow.store.Apps
 import com.expeknow.store.NavigationScreens
 import com.expeknow.store.R
+import com.expeknow.store.widgets.AppListRow
+import com.expeknow.store.widgets.TopBar
 
 
 @ExperimentalMaterial3Api
 @Composable
-fun DetailsPage(modifier : Modifier = Modifier, navController: NavController) {
+fun DetailsPage(navController: NavController) {
 
     val app_images = ArrayList<Int>()
     app_images.add(R.drawable.home_window)
@@ -60,13 +62,14 @@ fun DetailsPage(modifier : Modifier = Modifier, navController: NavController) {
 
     Scaffold(topBar = { TopBar(navController) },
     ) {
-        Column(modifier = modifier
+        Column(modifier = Modifier
             .padding(it)
             .padding(5.dp)
             .verticalScroll(scrollState)) {
+
             //App logo, name, publisher and tags
             Row {
-                    Card(modifier = modifier
+                    Card(modifier = Modifier
                         .size(120.dp)
                         .padding(10.dp),
                     shape = RoundedCornerShape(20.dp)
@@ -74,101 +77,48 @@ fun DetailsPage(modifier : Modifier = Modifier, navController: NavController) {
                         Image(painter = painterResource(id = R.drawable.icon),
                             contentDescription = "app logo")
                     }
-                    Box(modifier = modifier.align(CenterVertically)){
+                    Box(modifier = Modifier.align(CenterVertically)){
                         Column {
                             Text(text = "Life Calender",
                                 fontSize = 22.sp,
                                 fontFamily = FontFamily.SansSerif,
                                 fontWeight = FontWeight.Bold,
                                 letterSpacing = 0.sp,
-                                modifier = modifier.padding(start = 10.dp, bottom = 5.dp)
+                                modifier = Modifier.padding(start = 10.dp, bottom = 5.dp)
                             )
-                            Text(text = "By Epeknow",
+                            Text(text = "By Expeknow",
                                 fontSize = 14.sp,
                                 fontFamily = FontFamily.SansSerif,
                                 fontWeight = FontWeight.SemiBold,
                                 letterSpacing = 0.sp,
                                 color = Color.LightGray,
-                                modifier = modifier.padding(start = 10.dp, bottom = 10.dp)
+                                modifier = Modifier.padding(start = 10.dp, bottom = 10.dp)
                             )
-                            Row(modifier = modifier.padding(start = 10.dp)) {
-                                Card(
-                                    modifier = modifier.padding(0.dp),
-                                    shape = RoundedCornerShape(5.dp),
-                                    colors = CardDefaults.cardColors(
-                                        containerColor = Color.LightGray,
-                                        contentColor = Color.DarkGray
-                                    )
-                                ) {
-                                    Text(text = "Productivity",
-                                        fontSize = 10.sp,
-                                        modifier = modifier.padding(3.dp))
-                                }
-
-                                Card(modifier = modifier.padding(start = 5.dp),
-                                    shape = RoundedCornerShape(5.dp),
-                                    colors = CardDefaults.cardColors(
-                                        containerColor = Color.LightGray,
-                                        contentColor = Color.DarkGray
-                                    )
-                                ) {
-                                    Text(text = "Personalization", fontSize = 10.sp,
-                                        modifier = modifier.padding(3.dp))
-                                }
+                            Row(modifier = Modifier.padding(start = 10.dp)) {
+                                AppTagCard(tag = "Productivity")
+                                AppTagCard(tag = "Personalization",
+                                    modifier = Modifier.padding(horizontal = 5.dp))
                             }
                         }
                     }
 
                 }
-            //app downloads, reviews and size
+            //app stats row
             Row(horizontalArrangement = Arrangement.Center,
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 10.dp)) {
-                Box(){
-                    Text(text = "12 MB",
-                        fontSize = 14.sp,
-                        fontFamily = FontFamily.SansSerif,
-                        fontWeight = FontWeight.SemiBold,
-                        letterSpacing = 0.sp,
-                        color = Color.LightGray,
-                        modifier = modifier
-                            .padding(start = 10.dp, bottom = 10.dp)
-                    )
-                }
-                Box {
-                    Text(text = "12K Downloads",
-                        fontSize = 14.sp,
-                        fontFamily = FontFamily.SansSerif,
-                        fontWeight = FontWeight.SemiBold,
-                        letterSpacing = 0.sp,
-                        color = Color.LightGray,
-                        modifier = modifier
-                            .padding(start = 10.dp, bottom = 10.dp)
 
-                    )
-                }
-
-                Box {
-                    Text(text = "40 Reviews",
-                        fontSize = 14.sp,
-                        fontFamily = FontFamily.SansSerif,
-                        fontWeight = FontWeight.SemiBold,
-                        letterSpacing = 0.sp,
-                        color = Color.LightGray,
-                        modifier = modifier
-                            .padding(start = 10.dp, bottom = 10.dp)
-
-                    )
-                }
-
+                AppStatsText(statText = "12 MB")
+                AppStatsText(statText = "12K Downloads")
+                AppStatsText(statText = "43 Reviews")
             }
 
             //Download button
             Button(onClick = { },
-            modifier = modifier
-                .padding(10.dp)
-                .fillMaxWidth(),
+                modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxWidth(),
             shape = RoundedCornerShape(10.dp),
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = Color.Black,
@@ -179,98 +129,35 @@ fun DetailsPage(modifier : Modifier = Modifier, navController: NavController) {
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
                     color = Color.White,
-                    modifier = modifier.padding(3.dp)
+                    modifier = Modifier.padding(3.dp)
                 )
             }
 
             //Video card
-            Box(modifier = modifier.padding(10.dp)) {
-                Card(shape = RoundedCornerShape(20.dp),
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .height(200.dp),
-                colors = CardDefaults.cardColors(
-                    contentColor = Color.Gray
-                )) {
-                    Icon(imageVector = Icons.Filled.PlayArrow,
-                        contentDescription = "play video",
-                        modifier = modifier.padding(20.dp))
-                }
+            Box(modifier = Modifier.padding(10.dp)) {
+                VideoCard(videoLink = "")
             }
 
-            //Decription of the app
+            //Description of the app
             Text(text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiut enim ad minim veniam... Read More. ",
             fontSize = 14.sp,
             color = Color.Gray,
-            modifier = modifier.padding(20.dp))
+                modifier = Modifier.padding(20.dp))
+
 
             //App screenshots
-            LazyRow(modifier = modifier.padding(0.dp)) {
+            LazyRow(modifier = Modifier.padding(0.dp)) {
                 items(app_images.size){
                     val index = it
-                    Card(
-                        modifier
-                            .padding(5.dp)
-                            .height(333.dp)
-                            .width(150.dp),
-                    shape = RoundedCornerShape(10.dp)
-                    ) {
-                        Image(painter = painterResource(id = app_images[index])
-                            , contentDescription = "", contentScale = ContentScale.Crop)
-                    }
+                    AppScreenshot(imageId = app_images[index])
                 }
             }
 
-            //other picks
-            Row(
-                Modifier
-                    .padding(vertical = 0.dp)
-            ) {
-                Column() {
-
-                    Text(text = "Other Apps",
-                        fontSize = 25.sp,
-                        fontFamily = FontFamily.SansSerif,
-                        fontWeight = FontWeight.Bold,
-                        letterSpacing = 0.1.sp,
-                        modifier = modifier.padding(top = 20.dp, start = 10.dp, bottom = 6.dp)
-                    )
-                    LazyRow() {
-                        val list = Apps()
-                        items (list.size){
-                                index ->
-                            Column(Modifier.padding(6.dp)) {
-                                Box(
-                                    modifier
-                                        .width(100.dp)
-                                        .height(100.dp)) {
-                                    Card(shape = RoundedCornerShape(20.dp),
-                                        elevation = CardDefaults.cardElevation(5.dp)) {
-                                        Image(painter = painterResource(id = list[index].appLogo),
-                                            contentDescription = "",
-                                            contentScale = ContentScale.Crop
-                                        )
-                                    }
-
-                                }
-                                Text(text = list[index].appName,
-                                    textAlign = TextAlign.Center,
-                                    modifier = modifier.padding(6.dp),
-                                    fontSize = 14.sp
-                                )
-
-                            }
-
-
-                        }
-                    }
-
-                }
-            }
+            //other apps row
+            AppListRow(appList = Apps(), heading = "Other Apps", navController = navController)
 
             //End credits
-
-            Box(modifier = modifier
+            Box(modifier = Modifier
                 .padding(10.dp)
                 .fillMaxWidth()
                 .align(CenterHorizontally)){
@@ -285,32 +172,63 @@ fun DetailsPage(modifier : Modifier = Modifier, navController: NavController) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun TopBar(navController: NavController) {
-    CenterAlignedTopAppBar(
-        title = { Text(text = "")},
-        navigationIcon = {
-            IconButton(
-                onClick = {navController.popBackStack()} ) {
-                Icon(
-                    imageVector = Icons.Outlined.ArrowBackIos,
-                    contentDescription = "",
-                    modifier = Modifier
-                        .size(25.dp)
-                        .padding(start = 8.dp)
-                )
-            }
-        },
-        actions = {
-            IconButton(onClick = {
-            }) {
-                Icon(
-                    imageVector = Icons.Outlined.MoreVert,
-                    contentDescription = "more options"
-                )
-            }
-        }
 
-    ) 
+@Composable
+fun AppTagCard(tag: String, modifier: Modifier = Modifier) {
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(5.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.LightGray,
+            contentColor = Color.DarkGray
+        )
+    ) {
+        Text(text = tag,
+            fontSize = 10.sp,
+            modifier = Modifier.padding(3.dp))
+    }
+}
+
+@Composable
+fun VideoCard(videoLink: String) {
+    Card(shape = RoundedCornerShape(20.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp),
+        colors = CardDefaults.cardColors(
+            contentColor = Color.Gray
+        )) {
+        Icon(imageVector = Icons.Filled.PlayArrow,
+            contentDescription = "play video",
+            modifier = Modifier.padding(20.dp))
+    }
+}
+
+@Composable
+fun AppScreenshot(imageId: Int) {
+    Card(
+        Modifier
+            .padding(5.dp)
+            .height(333.dp)
+            .width(150.dp),
+        shape = RoundedCornerShape(10.dp)
+    ) {
+        Image(painter = painterResource(id = imageId)
+            , contentDescription = "", contentScale = ContentScale.Crop)
+    }
+}
+
+@Composable
+fun AppStatsText(statText: String){
+    Box {
+        Text(text = statText,
+            fontSize = 14.sp,
+            fontFamily = FontFamily.SansSerif,
+            fontWeight = FontWeight.SemiBold,
+            letterSpacing = 0.sp,
+            color = Color.LightGray,
+            modifier = Modifier
+                .padding(start = 10.dp, bottom = 10.dp)
+        )
+    }
 }
