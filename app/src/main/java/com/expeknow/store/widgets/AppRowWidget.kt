@@ -20,11 +20,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.expeknow.store.NavigationScreens
-import com.expeknow.store.SampleData
 import com.expeknow.store.network.App
 import com.skydoves.landscapist.coil.CoilImage
 
@@ -88,20 +88,21 @@ fun CommonAppTemplate(navController: NavController, appData: App,
             .width(100.dp)
             .height(100.dp)
             .clickable {
-                navController.navigate(NavigationScreens.Details.route)
+                navController.navigate("details/${appData.appId}")
             }) {
         Card(shape = RoundedCornerShape(20.dp),
-            onClick = { navController.navigate(NavigationScreens.Details.route)}) {
+            onClick = { navController.navigate("details/${appData.appId}")}) {
             CoilImage(imageModel = appData.icon,
                 contentDescription = "",
                 contentScale = ContentScale.Crop
             )
         }
-
     }
     Text(text = appData.appName!!,
-        textAlign = TextAlign.Center,
-        modifier = modifier.padding(6.dp),
-        fontSize = 14.sp
+        modifier = modifier.padding(6.dp).width(90.dp),
+        fontSize = 14.sp,
+        overflow = TextOverflow.Ellipsis,
+        maxLines = 1
     )
+
 }

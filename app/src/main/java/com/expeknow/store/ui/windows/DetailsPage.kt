@@ -41,23 +41,27 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.expeknow.store.Apps
 import com.expeknow.store.NavigationScreens
 import com.expeknow.store.R
+import com.expeknow.store.network.App
+import com.expeknow.store.network.StoreManager
 import com.expeknow.store.widgets.AppListRow
 import com.expeknow.store.widgets.TopBar
+import com.skydoves.landscapist.coil.CoilImage
 
 
 @ExperimentalMaterial3Api
 @Composable
-fun DetailsPage(navController: NavController) {
+fun DetailsPage(navController: NavController, storeManager: StoreManager, appId : Int) {
 
-    val app_images = ArrayList<Int>()
-    app_images.add(R.drawable.home_window)
-    app_images.add(R.drawable.details_window)
-    app_images.add(R.drawable.image_window)
-    app_images.add(R.drawable.search_window)
-    app_images.add(R.drawable.saved_window)
+    val appList = storeManager.appList.value
+    lateinit var appData : App
+    for (i in 0 until appList.apps!!.size){
+        if(appList.apps[i].appId == appId){
+           appData =  appList.apps[i]
+        }
+    }
+
     val scrollState = rememberScrollState()
 
     Scaffold(topBar = { TopBar(navController) },
@@ -74,12 +78,12 @@ fun DetailsPage(navController: NavController) {
                         .padding(10.dp),
                     shape = RoundedCornerShape(20.dp)
                     ) {
-                        Image(painter = painterResource(id = R.drawable.icon),
+                        CoilImage(imageModel = appData.icon,
                             contentDescription = "app logo")
                     }
                     Box(modifier = Modifier.align(CenterVertically)){
                         Column {
-                            Text(text = "Life Calender",
+                            Text(text = appData.appName!!,
                                 fontSize = 22.sp,
                                 fontFamily = FontFamily.SansSerif,
                                 fontWeight = FontWeight.Bold,
@@ -95,8 +99,10 @@ fun DetailsPage(navController: NavController) {
                                 modifier = Modifier.padding(start = 10.dp, bottom = 10.dp)
                             )
                             Row(modifier = Modifier.padding(start = 10.dp)) {
-                                AppTagCard(tag = "Productivity")
-                                AppTagCard(tag = "Personalization",
+                                for(index in 0..appData.tags!!.size-2){
+                                    AppTagCard(tag = appData.tags!![index])
+                                }
+                                AppTagCard(tag = appData.tags!![appData.tags!!.size-1],
                                     modifier = Modifier.padding(horizontal = 5.dp))
                             }
                         }
@@ -109,7 +115,7 @@ fun DetailsPage(navController: NavController) {
                     .fillMaxWidth()
                     .padding(vertical = 10.dp)) {
 
-                AppStatsText(statText = "12 MB")
+                AppStatsText(statText = "${appData.size} MB")
                 AppStatsText(statText = "12K Downloads")
                 AppStatsText(statText = "43 Reviews")
             }
@@ -139,7 +145,7 @@ fun DetailsPage(navController: NavController) {
             }
 
             //Description of the app
-            Text(text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiut enim ad minim veniam... Read More. ",
+            Text(text = appData.description!!,
             fontSize = 14.sp,
             color = Color.Gray,
                 modifier = Modifier.padding(20.dp))
@@ -147,9 +153,8 @@ fun DetailsPage(navController: NavController) {
 
             //App screenshots
             LazyRow(modifier = Modifier.padding(0.dp)) {
-                items(app_images.size){
-                    val index = it
-                    AppScreenshot(imageId = app_images[index])
+                items(appData.screenshot!!.size){
+                    AppScreenshot(imageLink = appData.screenshot!![it])
                 }
             }
 
@@ -205,7 +210,7 @@ fun VideoCard(videoLink: String) {
 }
 
 @Composable
-fun AppScreenshot(imageId: Int) {
+fun AppScreenshot(imageLink: String) {
     Card(
         Modifier
             .padding(5.dp)
@@ -213,8 +218,8 @@ fun AppScreenshot(imageId: Int) {
             .width(150.dp),
         shape = RoundedCornerShape(10.dp)
     ) {
-        Image(painter = painterResource(id = imageId)
-            , contentDescription = "", contentScale = ContentScale.Crop)
+        CoilImage(imageModel = imageLink,
+            contentDescription = "", contentScale = ContentScale.Crop)
     }
 }
 

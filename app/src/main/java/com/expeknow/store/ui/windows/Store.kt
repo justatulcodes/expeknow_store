@@ -1,5 +1,6 @@
 package com.expeknow.store.ui.windows
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
@@ -47,10 +48,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.request.ImageRequest
-import com.expeknow.store.Apps
 import com.expeknow.store.NavigationScreens
 import com.expeknow.store.R
-import com.expeknow.store.SampleData
 import com.expeknow.store.network.App
 import com.expeknow.store.network.AppData
 import com.expeknow.store.network.StoreManager
@@ -65,8 +64,8 @@ import com.skydoves.landscapist.coil.CoilImage
 @Composable
 fun Store(scrollState: ScrollState, navController: NavController, storeManager : StoreManager) {
 
-    val featured_apps = storeManager.featuredApps.value
-    val all_apps = storeManager.appList.value
+    val featuredApps : AppData = storeManager.featuredApps.value
+    val allApps : AppData = storeManager.appList.value
 
     Scaffold(Modifier.fillMaxSize()) {
         Column(
@@ -100,37 +99,45 @@ fun Store(scrollState: ScrollState, navController: NavController, storeManager :
 
             }
 
-
-            //Developer's Choice
-            Row(Modifier.padding(top = 20.dp, bottom = 10.dp)) {
-                Column {
-                    AppListRowHeader(heading = "Developer's Choice",
-                        modifier = Modifier.padding(top = 20.dp))
-                    LazyRow {
-                        items (featured_apps.apps!!.size){
-                                index ->
-                            Column {
-                                DevChoiceAppTemplate(navController = navController,
-                                    appData = featured_apps.apps[index])
+            if(allApps.apps != null && featuredApps.apps != null){
+                //Developer's Choice
+                Row(Modifier.padding(top = 20.dp, bottom = 10.dp)) {
+                    Column {
+                        AppListRowHeader(heading = "Developer's Choice",
+                            modifier = Modifier.padding(top = 20.dp))
+                        LazyRow {
+                            items (featuredApps.apps.size){
+                                    index ->
+                                Log.d("Featured App Size", featuredApps.apps.size.toString())
+                                Column {
+                                    DevChoiceAppTemplate(navController = navController,
+                                        appData = featuredApps.apps[index])
+                                }
                             }
                         }
-                    }
 
+                    }
                 }
+
+                //Newly Released Apps Section
+                AppListRow(appList = allApps.apps, heading = "Newly Released",
+                    navController = navController)
+
+                //Old Apps
+                AppListRow(appList = allApps.apps, heading = "Old Apps",
+                    navController = navController)
+
+                //Under Development
+                AppListRow(appList = allApps.apps, heading = "Under Development",
+                    navController = navController)
+
             }
 
-            //Newly Released Apps Section
-            AppListRow(appList = all_apps.apps!!, heading = "Newly Released",
-                navController = navController)
-
-            //Old Apps
-            AppListRow(appList = all_apps.apps, heading = "Old Apps",
-                navController = navController)
-
-            //Under Development
-            AppListRow(appList = all_apps.apps, heading = "Under Development",
-                navController = navController)
-
+           else{
+               Box(modifier = Modifier.fillMaxSize()){
+                   Text(text = "Loading...")
+               }
+            }
         }
     }
 
@@ -143,9 +150,9 @@ fun DevChoiceAppTemplate(navController: NavController, appData: App,
         modifier
             .width(280.dp)
             .height(180.dp)
-            .padding(4.dp)
+            .padding(6.dp)
             .clickable {
-                navController.navigate(NavigationScreens.Details.route)
+                navController.navigate("details/${appData.appId}")
             }) {
         Card(shape = RoundedCornerShape(20.dp),
         ) {

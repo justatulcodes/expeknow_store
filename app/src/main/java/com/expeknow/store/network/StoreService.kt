@@ -8,6 +8,6 @@ interface StoreService {
     @GET(".")
     fun getAllApps() : Call<AppData>
 
-    @GET(".")
+    @GET("featured")
     fun getFeaturedApps() : Call<AppData>
 }

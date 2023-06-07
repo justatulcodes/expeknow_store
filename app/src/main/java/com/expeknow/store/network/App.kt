@@ -1,6 +1,7 @@
 package com.expeknow.store.network
 
 data class App(
+    val appId : Int? = null,
     val appGraphic: String? = null,
     val appName: String? = null,
     val complexity: Int? = null,

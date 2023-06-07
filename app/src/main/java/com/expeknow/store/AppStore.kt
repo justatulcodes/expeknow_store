@@ -8,8 +8,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.expeknow.store.network.StoreManager
 import com.expeknow.store.ui.windows.DetailsPage
 import com.expeknow.store.ui.windows.ProfilePage
@@ -24,11 +26,7 @@ import kotlinx.coroutines.*
 @Composable
 fun AppStore(scrollState: ScrollState, navController: NavHostController) {
 
-    lateinit var storeManager : StoreManager
-
-    runBlocking {
-        storeManager = StoreManager()
-    }
+    val storeManager = StoreManager()
 
 
     Scaffold {
@@ -37,8 +35,11 @@ fun AppStore(scrollState: ScrollState, navController: NavHostController) {
             composable(NavigationScreens.Store.route) {
                 Store(scrollState = scrollState, navController = navController, storeManager = storeManager)
             }
-            composable(NavigationScreens.Details.route){
-                DetailsPage(navController = navController)
+            composable(NavigationScreens.Details.route,
+            arguments = listOf(navArgument("id"){type= NavType.IntType})
+            ){
+                val id = it.arguments?.getInt("id")!!
+                DetailsPage(navController = navController, storeManager = storeManager, appId = id)
             }
             composable(NavigationScreens.Profile.route){
                 ProfilePage(navController = navController)

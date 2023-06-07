@@ -1,7 +1,6 @@
 package com.expeknow.store
 
 import android.os.Bundle
-import com.expeknow.store.SampleData.*
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ScrollState
