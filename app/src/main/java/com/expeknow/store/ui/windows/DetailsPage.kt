@@ -154,7 +154,7 @@ fun DetailsPage(navController: NavController) {
             }
 
             //other apps row
-            AppListRow(appList = Apps(), heading = "Other Apps", navController = navController)
+//            AppListRow(appList = Apps(), heading = "Other Apps", navController = navController)
 
             //End credits
             Box(modifier = Modifier

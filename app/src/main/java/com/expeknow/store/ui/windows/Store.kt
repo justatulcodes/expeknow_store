@@ -46,20 +46,27 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.request.ImageRequest
 import com.expeknow.store.Apps
 import com.expeknow.store.NavigationScreens
 import com.expeknow.store.R
 import com.expeknow.store.SampleData
+import com.expeknow.store.network.App
+import com.expeknow.store.network.AppData
+import com.expeknow.store.network.StoreManager
 import com.expeknow.store.widgets.AppListRow
 import com.expeknow.store.widgets.AppListRowHeader
+import com.skydoves.landscapist.coil.CoilImage
 
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class,
     ExperimentalMaterialApi::class
 )
 @Composable
-fun Store(scrollState: ScrollState, navController: NavController) {
+fun Store(scrollState: ScrollState, navController: NavController, storeManager : StoreManager) {
 
+    val featured_apps = storeManager.featuredApps.value
+    val all_apps = storeManager.appList.value
 
     Scaffold(Modifier.fillMaxSize()) {
         Column(
@@ -100,12 +107,11 @@ fun Store(scrollState: ScrollState, navController: NavController) {
                     AppListRowHeader(heading = "Developer's Choice",
                         modifier = Modifier.padding(top = 20.dp))
                     LazyRow {
-                        val list = Apps()
-                        items (list.size){
+                        items (featured_apps.apps!!.size){
                                 index ->
                             Column {
                                 DevChoiceAppTemplate(navController = navController,
-                                    appData = list[index])
+                                    appData = featured_apps.apps[index])
                             }
                         }
                     }
@@ -114,15 +120,15 @@ fun Store(scrollState: ScrollState, navController: NavController) {
             }
 
             //Newly Released Apps Section
-            AppListRow(appList = Apps(), heading = "Newly Released",
+            AppListRow(appList = all_apps.apps!!, heading = "Newly Released",
                 navController = navController)
 
             //Old Apps
-            AppListRow(appList = Apps(), heading = "Old Apps",
+            AppListRow(appList = all_apps.apps, heading = "Old Apps",
                 navController = navController)
 
             //Under Development
-            AppListRow(appList = Apps(), heading = "Under Development",
+            AppListRow(appList = all_apps.apps, heading = "Under Development",
                 navController = navController)
 
         }
@@ -131,7 +137,7 @@ fun Store(scrollState: ScrollState, navController: NavController) {
 }
 
 @Composable
-fun DevChoiceAppTemplate(navController: NavController, appData: SampleData,
+fun DevChoiceAppTemplate(navController: NavController, appData: App,
                          modifier: Modifier= Modifier) {
     Box(
         modifier
@@ -143,15 +149,14 @@ fun DevChoiceAppTemplate(navController: NavController, appData: SampleData,
             }) {
         Card(shape = RoundedCornerShape(20.dp),
         ) {
-            Image(painter = painterResource(id = appData.graphic),
+            CoilImage(imageModel = appData.appGraphic,
                 contentDescription = "",
-                contentScale = ContentScale.Crop
-            )
+                contentScale = ContentScale.Crop)
         }
     }
 
     Column(Modifier.padding(start = 12.dp)) {
-        Text(text = appData.appName,
+        Text(text = appData.appName!!,
             fontSize = 16.sp,
             fontFamily = FontFamily.SansSerif,
             fontWeight = FontWeight.SemiBold,
@@ -168,7 +173,7 @@ fun DevChoiceAppTemplate(navController: NavController, appData: SampleData,
                 tint = colorResource(id = R.color.star_color),
                 modifier = Modifier.size(16.dp))
 
-            Text(text = "{${appData.stars}",
+            Text(text = "${appData.complexity}",
                 fontSize = 12.sp,
                 fontFamily = FontFamily.SansSerif,
                 fontWeight = FontWeight.SemiBold,

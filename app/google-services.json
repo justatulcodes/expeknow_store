@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "426751746528",
+    "project_id": "expeknow-store",
+    "storage_bucket": "expeknow-store.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:426751746528:android:d5e23e041810b97cea4b85",
+        "android_client_info": {
+          "package_name": "com.expeknow.store"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "426751746528-mudgorjovk6j1ifpqqif3ksm6ke2isrd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCb2MKwHww-rWEv7i8uyatBIKWA_Xx-zG8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "426751746528-mudgorjovk6j1ifpqqif3ksm6ke2isrd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

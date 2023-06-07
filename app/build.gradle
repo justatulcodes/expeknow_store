@@ -48,9 +48,9 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
-    implementation 'androidx.activity:activity-compose:1.5.1'
+    implementation 'androidx.core:core-ktx:1.10.1'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
+    implementation 'androidx.activity:activity-compose:1.7.2'
     implementation platform('androidx.compose:compose-bom:2022.10.00')
     implementation 'androidx.compose.ui:ui'
     implementation 'androidx.compose.ui:ui-graphics'
@@ -68,6 +68,26 @@ dependencies {
     def nav_compose_version = "2.6.0-alpha09"
     //noinspection GradleDependency
     implementation "androidx.navigation:navigation-compose:$nav_compose_version"
+
+    //Retrofit dependency
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+
+    //to load and update images
+    implementation "com.github.skydoves:landscapist-coil:1.4.1"
+    implementation "io.coil-kt:coil:1.4.0"
+
+    //These dependencies are used to convert JSON response from API to Kotlin objects.
+    //
+    //Moshi is a modern JSON library for Kotlin and Java. moshi-kotlin is a
+    // Moshi adapter for Kotlin that provides support for Kotlin features like non
+    // -nullable types, default values, and data classes.
+    //
+    //retrofit2:converter-moshi is a Moshi converter for Retrofit that enables the
+    // conversion of the response body to a Kotlin object.
+    implementation 'com.squareup.moshi:moshi-kotlin:1.9.3'
+    implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
 }
 
 configurations.implementation {

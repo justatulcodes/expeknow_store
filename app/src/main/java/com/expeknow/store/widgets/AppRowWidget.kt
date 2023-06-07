@@ -25,13 +25,15 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.expeknow.store.NavigationScreens
 import com.expeknow.store.SampleData
+import com.expeknow.store.network.App
+import com.skydoves.landscapist.coil.CoilImage
 
 /**
  * Creates an app list row which displays icons of the app and thier name below
  * for the list of apps provided.
  */
 @Composable
-fun AppListRow(appList: List<SampleData>, heading: String, navController: NavController,
+fun AppListRow(appList: List<App>, heading: String, navController: NavController,
                modifier: Modifier = Modifier
 ) {
     Row(
@@ -78,7 +80,7 @@ fun AppListRowHeader(heading: String, modifier: Modifier = Modifier){
  */
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun CommonAppTemplate(navController: NavController, appData: SampleData,
+fun CommonAppTemplate(navController: NavController, appData: App,
                       modifier: Modifier = Modifier
 ) {
     Box(
@@ -90,14 +92,14 @@ fun CommonAppTemplate(navController: NavController, appData: SampleData,
             }) {
         Card(shape = RoundedCornerShape(20.dp),
             onClick = { navController.navigate(NavigationScreens.Details.route)}) {
-            Image(painter = painterResource(id = appData.appLogo),
+            CoilImage(imageModel = appData.icon,
                 contentDescription = "",
                 contentScale = ContentScale.Crop
             )
         }
 
     }
-    Text(text = appData.appName,
+    Text(text = appData.appName!!,
         textAlign = TextAlign.Center,
         modifier = modifier.padding(6.dp),
         fontSize = 14.sp
