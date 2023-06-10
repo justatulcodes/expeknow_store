@@ -1,5 +1,8 @@
 package com.expeknow.store.ui.windows
 
+import android.text.Html
+import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -29,15 +32,23 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -48,19 +59,14 @@ import com.expeknow.store.network.StoreManager
 import com.expeknow.store.widgets.AppListRow
 import com.expeknow.store.widgets.TopBar
 import com.skydoves.landscapist.coil.CoilImage
+import java.net.HttpURLConnection
+import java.net.URLDecoder
+import java.net.URLEncoder
 
 
 @ExperimentalMaterial3Api
 @Composable
-fun DetailsPage(navController: NavController, storeManager: StoreManager, appId : Int) {
-
-    val appList = storeManager.appList.value
-    lateinit var appData : App
-    for (i in 0 until appList.apps!!.size){
-        if(appList.apps[i].appId == appId){
-           appData =  appList.apps[i]
-        }
-    }
+fun DetailsPage(navController: NavController, appData: App) {
 
     val scrollState = rememberScrollState()
 
@@ -144,17 +150,16 @@ fun DetailsPage(navController: NavController, storeManager: StoreManager, appId 
                 VideoCard(videoLink = "")
             }
 
-            //Description of the app
-            Text(text = appData.description!!,
-            fontSize = 14.sp,
-            color = Color.Gray,
-                modifier = Modifier.padding(20.dp))
+            Box(modifier = Modifier.padding(10.dp)){
+                DescriptionBox(appData = appData)
+            }   
+            
 
 
             //App screenshots
             LazyRow(modifier = Modifier.padding(0.dp)) {
                 items(appData.screenshot!!.size){
-                    AppScreenshot(imageLink = appData.screenshot!![it])
+                    AppScreenshot(imageLink = appData.screenshot[it], navController = navController)
                 }
             }
 
@@ -178,6 +183,58 @@ fun DetailsPage(navController: NavController, storeManager: StoreManager, appId 
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DescriptionBox(appData: App) {
+
+    var isExpanded by remember {
+        mutableStateOf(false)
+    }
+    Column(modifier = Modifier.fillMaxWidth(),) {
+        Card(shape = RoundedCornerShape(20.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color.Transparent
+            )
+        ) {
+            Text(text = appData.tagLine!!,
+                fontSize = 14.sp,
+                color = Color.Gray,
+                modifier = Modifier.padding(start = 15.dp, end = 15.dp, top = 15.dp),
+            )
+            AnimatedVisibility(visible = isExpanded,
+            ) {
+                Text(text = "\n"+appData.description!!,
+                    fontSize = 14.sp,
+                    color = Color.Gray,
+                    modifier = Modifier.padding(start = 15.dp, end = 15.dp),
+                )
+            }
+        }
+
+        Button(onClick = { isExpanded = !isExpanded },
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color.Transparent,
+                contentColor = Color.DarkGray,
+            ),
+            elevation = ButtonDefaults.elevation(
+                defaultElevation = 0.dp,
+                pressedElevation = 0.dp,
+                hoveredElevation = 0.dp,
+                focusedElevation = 0.dp
+            ),
+            modifier = Modifier.padding(bottom = 10.dp)
+        ) {
+            if(isExpanded)
+                Text(text = "Read Less...", fontSize = 13.sp, color = Color.DarkGray,
+                    fontWeight = FontWeight.SemiBold)
+            else
+                Text(text = "Read More...", fontSize = 13.sp, color = Color.DarkGray,
+                    fontWeight = FontWeight.SemiBold)
+        }
+    }
+
+}
+
 @Composable
 fun AppTagCard(tag: String, modifier: Modifier = Modifier) {
     Card(
@@ -194,6 +251,7 @@ fun AppTagCard(tag: String, modifier: Modifier = Modifier) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun VideoCard(videoLink: String) {
     Card(shape = RoundedCornerShape(20.dp),
@@ -202,21 +260,27 @@ fun VideoCard(videoLink: String) {
             .height(200.dp),
         colors = CardDefaults.cardColors(
             contentColor = Color.Gray
-        )) {
+        ),
+    onClick = {}) {
         Icon(imageVector = Icons.Filled.PlayArrow,
             contentDescription = "play video",
             modifier = Modifier.padding(20.dp))
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppScreenshot(imageLink: String) {
+fun AppScreenshot(imageLink: String, navController: NavController) {
     Card(
-        Modifier
+        modifier = Modifier
             .padding(5.dp)
             .height(333.dp)
             .width(150.dp),
-        shape = RoundedCornerShape(10.dp)
+        shape = RoundedCornerShape(10.dp),
+        onClick = {
+            val url = URLEncoder.encode(imageLink, "UTF-8")
+            navController.navigate("screenshotPage/${url}")
+        }
     ) {
         CoilImage(imageModel = imageLink,
             contentDescription = "", contentScale = ContentScale.Crop)

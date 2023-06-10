@@ -76,6 +76,10 @@ dependencies {
     implementation "com.github.skydoves:landscapist-coil:1.4.1"
     implementation "io.coil-kt:coil:1.4.0"
 
+    //Zoomable Images
+    implementation "net.engawapg.lib:zoomable:1.4.2"
+    implementation("io.coil-kt:coil-compose:2.3.0")
+
     //These dependencies are used to convert JSON response from API to Kotlin objects.
     //
     //Moshi is a modern JSON library for Kotlin and Java. moshi-kotlin is a
