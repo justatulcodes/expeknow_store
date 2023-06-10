@@ -120,7 +120,8 @@ fun Store(scrollState: ScrollState, navController: NavController, storeManager :
                 }
 
                 //Newly Released Apps Section
-                AppListRow(appList = allApps.apps, heading = "Newly Released",
+                val appsReversed = allApps.apps
+                AppListRow(appList = appsReversed.reversed(), heading = "Newly Released",
                     navController = navController)
 
                 //Old Apps

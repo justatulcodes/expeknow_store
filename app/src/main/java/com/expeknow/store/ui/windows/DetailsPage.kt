@@ -59,6 +59,7 @@ import com.expeknow.store.network.StoreManager
 import com.expeknow.store.widgets.AppListRow
 import com.expeknow.store.widgets.TopBar
 import com.skydoves.landscapist.coil.CoilImage
+import retrofit2.http.Url
 import java.net.HttpURLConnection
 import java.net.URLDecoder
 import java.net.URLEncoder
@@ -82,7 +83,11 @@ fun DetailsPage(navController: NavController, appData: App) {
                     Card(modifier = Modifier
                         .size(120.dp)
                         .padding(10.dp),
-                    shape = RoundedCornerShape(20.dp)
+                    shape = RoundedCornerShape(20.dp),
+                    onClick = {
+                        val encodedUrl = URLEncoder.encode(appData.icon, "UTF-8")
+                        navController.navigate("screenshotPage/${encodedUrl}")
+                    }
                     ) {
                         CoilImage(imageModel = appData.icon,
                             contentDescription = "app logo")
