@@ -1,6 +1,5 @@
 package com.expeknow.store.ui.windows
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
@@ -43,11 +42,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import coil.request.ImageRequest
 import com.expeknow.store.NavigationScreens
 import com.expeknow.store.R
 import com.expeknow.store.network.App
@@ -55,6 +52,8 @@ import com.expeknow.store.network.AppData
 import com.expeknow.store.network.StoreManager
 import com.expeknow.store.widgets.AppListRow
 import com.expeknow.store.widgets.AppListRowHeader
+import com.expeknow.store.widgets.ShimmeringAppRow
+import com.expeknow.store.widgets.ShimmeringFeaturedAppRow
 import com.skydoves.landscapist.coil.CoilImage
 
 
@@ -74,12 +73,13 @@ fun Store(scrollState: ScrollState, navController: NavController, storeManager :
                 .padding(it)
                 .verticalScroll(scrollState)
         ) {
-            
+
             //Search bar row
             Row(
                 Modifier.padding(15.dp)
             ) {
-                Card(shape = RoundedCornerShape(50.dp),
+                Card(
+                    shape = RoundedCornerShape(50.dp),
                     modifier = Modifier
                         .weight(1f)
                         .padding(end = 10.dp)
@@ -91,10 +91,11 @@ fun Store(scrollState: ScrollState, navController: NavController, storeManager :
                     modifier = Modifier
                         .size(50.dp)
                         .padding(0.dp),
-                    onClick = { navController.navigate(NavigationScreens.Profile.route)}) {
-                    Image(painter = painterResource(id = R.drawable.profile_pic),
+                    onClick = { navController.navigate(NavigationScreens.Profile.route) }) {
+                    Image(
+                        painter = painterResource(id = R.drawable.profile_pic),
                         contentDescription = "profile pic",
-                       )
+                    )
                 }
 
             }
@@ -108,7 +109,6 @@ fun Store(scrollState: ScrollState, navController: NavController, storeManager :
                         LazyRow {
                             items (featuredApps.apps.size){
                                     index ->
-                                Log.d("Featured App Size", featuredApps.apps.size.toString())
                                 Column {
                                     DevChoiceAppTemplate(navController = navController,
                                         appData = featuredApps.apps[index])
@@ -135,9 +135,10 @@ fun Store(scrollState: ScrollState, navController: NavController, storeManager :
             }
 
            else{
-               Box(modifier = Modifier.fillMaxSize()){
-                   Text(text = "Loading...")
-               }
+                ShimmeringFeaturedAppRow()
+                repeat(3) {
+                    ShimmeringAppRow()
+                }
             }
         }
     }
