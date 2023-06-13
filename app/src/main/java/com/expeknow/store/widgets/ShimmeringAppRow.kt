@@ -25,7 +25,7 @@ fun ShimmeringAppRow() {
                 .shimmerEffect()
         )
         Row() {
-            repeat(5){
+            repeat(3){
                 AppRowItem()
             }
         }
@@ -36,17 +36,17 @@ fun ShimmeringAppRow() {
 @Composable
 fun AppRowItem() {
 
-    Column(modifier = Modifier.padding(horizontal = 6.dp, vertical = 15.dp)) {
+    Column(modifier = Modifier.padding(horizontal = 6.dp, vertical = 10.dp)) {
         Box(
             modifier = Modifier
                 .height(100.dp)
                 .width(100.dp)
                 .shimmerEffect()
         )
-        Spacer(modifier = Modifier.height(6.dp))
+        Spacer(modifier = Modifier.height(3.dp))
         Box(
             modifier = Modifier
-                .width(60.dp)
+                .width(80.dp)
                 .height(25.dp)
                 .padding(6.dp)
                 .shimmerEffect()
