@@ -125,7 +125,7 @@ fun DetailsPage(navController: NavController, appData: App) {
 
             ) {
                 Row {
-                    AppStatsText(statText = "Size : ${appData.size} MB")
+                    AppStatsText(statText = "Size: ${appData.size} MB")
 
                 }
                 Row {
@@ -143,7 +143,7 @@ fun DetailsPage(navController: NavController, appData: App) {
             //Download button
             Button(onClick = { },
                 modifier = Modifier
-                    .padding(10.dp)
+                    .padding(15.dp)
                     .fillMaxWidth(),
             shape = RoundedCornerShape(10.dp),
             colors = ButtonDefaults.buttonColors(
@@ -159,22 +159,23 @@ fun DetailsPage(navController: NavController, appData: App) {
                 )
             }
 
-            //Video card
-            Box(modifier = Modifier.padding(10.dp)) {
-                VideoCard(videoLink = "")
+            //App screenshots
+            LazyRow(modifier = Modifier.padding(horizontal = 5.dp)) {
+                items(appData.screenshot!!.size){
+                    AppScreenshot(imageLink = appData.screenshot[it], navController = navController)
+                }
             }
 
             //Description Box
             Box(modifier = Modifier.padding(10.dp)){
                 DescriptionBox(appData = appData)
-            }   
-
-            //App screenshots
-            LazyRow(modifier = Modifier.padding(0.dp)) {
-                items(appData.screenshot!!.size){
-                    AppScreenshot(imageLink = appData.screenshot[it], navController = navController)
-                }
             }
+
+            //Video card
+            Box(modifier = Modifier.padding(10.dp)) {
+                VideoCard(videoLink = "")
+            }
+
 
             //other apps row
 //            AppListRow(appList = Apps(), heading = "Other Apps", navController = navController)
@@ -292,9 +293,9 @@ fun VideoCard(videoLink: String) {
 fun AppScreenshot(imageLink: String, navController: NavController) {
     Card(
         modifier = Modifier
-            .padding(5.dp)
-            .height(333.dp)
-            .width(150.dp),
+            .padding(4.dp)
+            .height(222.dp)
+            .width(100.dp),
         shape = RoundedCornerShape(10.dp),
         onClick = {
             val url = URLEncoder.encode(imageLink, "UTF-8")

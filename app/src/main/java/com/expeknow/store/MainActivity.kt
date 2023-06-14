@@ -25,9 +25,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val navController = rememberNavController()
-                    val scrollState : ScrollState = rememberScrollState()
-                    AppStore(scrollState = scrollState, navController = navController)
+                    AppStore()
                 }
             }
         }

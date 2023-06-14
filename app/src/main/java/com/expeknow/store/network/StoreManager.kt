@@ -23,11 +23,8 @@ class StoreManager {
         }
 
     init {
-        runBlocking {
             getAllApps()
             getFeaturedApps()
-        }
-
     }
 
     fun getAllApps() {

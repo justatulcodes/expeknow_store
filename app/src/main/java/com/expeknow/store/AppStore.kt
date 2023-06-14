@@ -3,6 +3,7 @@ package com.expeknow.store
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.Scaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
@@ -11,6 +12,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.expeknow.store.network.App
 import com.expeknow.store.network.StoreManager
@@ -24,8 +26,10 @@ import kotlinx.coroutines.*
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun AppStore(scrollState: ScrollState, navController: NavHostController) {
+fun AppStore() {
 
+    val navController = rememberNavController()
+    val scrollState : ScrollState = rememberScrollState()
     val storeManager = remember { StoreManager() }
 
 
@@ -49,7 +53,7 @@ fun AppStore(scrollState: ScrollState, navController: NavHostController) {
                 DetailsPage(navController = navController, appData = appData)
             }
             composable(NavigationScreens.Profile.route){
-                ProfilePage(navController = navController)
+                ProfilePage(navController = navController, scrollState)
             }
             composable(NavigationScreens.Screenshot.route,
             arguments = listOf(navArgument("link"){type= NavType.StringType})
