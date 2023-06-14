@@ -155,7 +155,8 @@ fun DevChoiceAppTemplate(navController: NavController, appData: App,
             .padding(6.dp)
             .clickable {
                 navController.navigate("details/${appData.appId}")
-            }) {
+            },
+        ) {
         Card(shape = RoundedCornerShape(20.dp),
         ) {
             CoilImage(imageModel = appData.appGraphic,

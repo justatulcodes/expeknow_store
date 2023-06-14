@@ -8,5 +8,5 @@ class Constants {
     val profile: String = "profile"
     val screenshot: String = "screenshotPage/{link}"
     val lightModeBackgroundColor = Color(0xFFFEFAFE)
-    val darkModeBackgroundColor = Color(0xFF29282E)
+    val darkModeBackgroundColor = Color(0xFF1C1B20)
 }
