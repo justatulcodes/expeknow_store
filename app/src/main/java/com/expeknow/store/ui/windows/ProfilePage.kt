@@ -1,5 +1,7 @@
 package com.expeknow.store.ui.windows
 
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.VectorDrawable
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.foundation.Image
@@ -23,6 +25,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowRight
 import androidx.compose.material.icons.filled.Call
+import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.outlined.ArrowBackIos
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.rounded.Call
@@ -49,6 +52,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -101,11 +105,16 @@ fun ProfilePage(navController: NavController, scrollState: ScrollState) {
                     .padding(horizontal = 10.dp)
                     .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly){
-                SocialIcons(icon = Icons.Rounded.Call, contentDescription = "call")
-                SocialIcons(icon = Icons.Rounded.Mail, contentDescription = "mail")
-                SocialIcons(icon = Icons.Rounded.Code, contentDescription = "github")
-                SocialIcons(icon = Icons.Rounded.PhotoCamera, contentDescription = "instagram")
-                SocialIcons(icon = Icons.Rounded.Work, contentDescription = "linkedin")
+                SocialIcons(id = R.drawable.download, contentDescription = "download",
+                    link = "https://firebasestorage.googleapis.com/v0/b/expeknow-store.appspot.com/o/Miscellaneous%2FCV%20Atul.pdf?alt=media&token=d025f0cc-c006-4405-83c9-687ad8eacd94")
+                SocialIcons(id = R.drawable.linkedin, contentDescription = "linkedin",
+                    link = "https://www.linkedin.com/in/expeknow/")
+                SocialIcons(id = R.drawable.github, contentDescription = "github",
+                    link = "https://github.com/expeknow")
+                SocialIcons(id = R.drawable.instagram, contentDescription = "instagram",
+                    link = "https://www.instagram.com/expeknow/")
+                SocialIcons(id = R.drawable.youtube, contentDescription = "youtube",
+                    link = "https://www.youtube.com/channel/UCCWs3eb5wvVfJ8JGWBvQdxw")
             }
 
             ProfileDetailHeading(headingString = "Core Skills", description = Constants().loremIpsum)
@@ -120,13 +129,21 @@ fun ProfilePage(navController: NavController, scrollState: ScrollState) {
 
 
 @Composable
-fun SocialIcons(icon: ImageVector, contentDescription: String) {
+fun SocialIcons(id : Int, contentDescription: String, link: String) {
+
+    val uriHandler = LocalUriHandler.current
     Card(shape = RoundedCornerShape(20.dp),
         modifier = Modifier.padding(horizontal = 0.dp, vertical = 20.dp)) {
-        Icon(imageVector = icon, contentDescription = contentDescription,
-            modifier = Modifier
-                .size(50.dp)
-                .padding(10.dp))
+        IconButton(onClick = {
+                uriHandler.openUri(link)
+        }) {
+            Icon(
+                painterResource(id = id) , contentDescription = contentDescription,
+                modifier = Modifier
+                    .size(60.dp)
+                    .padding(5.dp))
+        }
+
     }
 }
 
@@ -138,7 +155,7 @@ fun ProfileDetailHeading(headingString: String, description: String) {
         MutableInteractionSource()
     }
     var isExpanded by remember {
-        mutableStateOf(false)
+        mutableStateOf(true)
     }
     Column {
         Row(verticalAlignment = Alignment.CenterVertically) {

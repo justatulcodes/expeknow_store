@@ -1,5 +1,7 @@
 package com.expeknow.store.ui.windows
 
+import android.net.Uri
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -8,6 +10,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -22,6 +25,7 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.rounded.OpenInNew
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -38,17 +42,26 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.platform.UriHandler
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
 import com.expeknow.store.Constants
 import com.expeknow.store.R
 import com.expeknow.store.network.App
 import com.expeknow.store.widgets.TopBar
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.options.IFramePlayerOptions
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import com.skydoves.landscapist.coil.CoilImage
 import java.net.URLEncoder
 
@@ -167,13 +180,33 @@ fun DetailsPage(navController: NavController, appData: App) {
             }
 
             //Description Box
-            Box(modifier = Modifier.padding(10.dp)){
+            Box(modifier = Modifier.padding(horizontal = 10.dp, vertical = 10.dp)){
                 DescriptionBox(appData = appData)
             }
 
             //Video card
-            Box(modifier = Modifier.padding(10.dp)) {
-                VideoCard(videoLink = "")
+            Box(modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)) {
+                VideoCard(videoId = "_OwNFUaAXfk")
+            }
+            
+            val mUriHandler = LocalUriHandler.current 
+            Button(onClick = { mUriHandler.openUri("https://www.youtube.com/watch?v=GgS9Q8zVL2k") },
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color.Black,
+            ),
+            shape = RoundedCornerShape(10.dp),
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
+            ) {
+                Row(modifier = Modifier.fillMaxSize(),
+                verticalAlignment = CenterVertically,
+                horizontalArrangement = Arrangement.Center) {
+                    Text(text = "Open in youtube", fontSize = 15.sp,
+                    color = Color.White)
+                    Icon(imageVector = Icons.Rounded.OpenInNew,
+                        contentDescription = "open in youtube ",
+                        tint = Color.White,
+                        modifier = Modifier.size(18.dp).padding(start = 3.dp))
+                }
             }
 
 
@@ -242,7 +275,6 @@ fun DescriptionBox(appData: App) {
                 hoveredElevation = 0.dp,
                 focusedElevation = 0.dp
             ),
-            modifier = Modifier.padding(bottom = 10.dp)
         ) {
             if(isExpanded)
                 Text(text = "Read Less...", fontSize = 13.sp, color = Color.Gray,
@@ -271,20 +303,29 @@ fun AppTagCard(tag: String, modifier: Modifier = Modifier) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun VideoCard(videoLink: String) {
-    Card(shape = RoundedCornerShape(20.dp),
+fun VideoCard(videoId: String) {
+    Card(shape = RoundedCornerShape(15.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp),
-        colors = CardDefaults.cardColors(
-            contentColor = Color.Gray
-        ),
-    onClick = {}) {
-        Icon(imageVector = Icons.Filled.PlayArrow,
-            contentDescription = "play video",
-            modifier = Modifier.padding(20.dp))
+            .height(180.dp),
+    ) {
+        AndroidView(factory = {
+            val view = YouTubePlayerView(it)
+            val iFramePlayerOptions = IFramePlayerOptions.Builder()
+            iFramePlayerOptions.fullscreen(1)
+            view.addYouTubePlayerListener(
+                object : AbstractYouTubePlayerListener() {
+                    override fun onReady(youTubePlayer: YouTubePlayer) {
+                        super.onReady(youTubePlayer)
+                        youTubePlayer.cueVideo(videoId, 0f)
+                    }
+
+                }
+            )
+            view
+        })
+
     }
 }
 

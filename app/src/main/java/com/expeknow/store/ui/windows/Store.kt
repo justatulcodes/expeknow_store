@@ -21,6 +21,8 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.icons.filled.Bolt
+import androidx.compose.material.icons.filled.Thunderstorm
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -178,7 +180,7 @@ fun DevChoiceAppTemplate(navController: NavController, appData: App,
                 fontFamily = FontFamily.SansSerif,
                 fontWeight = FontWeight.SemiBold,
             )
-            Icon(imageVector = Icons.Filled.Star,
+            Icon(imageVector = Icons.Filled.Bolt,
                 contentDescription = "stars",
                 tint = colorResource(id = R.color.star_color),
                 modifier = Modifier.size(16.dp))
