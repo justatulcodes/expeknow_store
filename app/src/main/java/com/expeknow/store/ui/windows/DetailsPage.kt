@@ -1,7 +1,5 @@
 package com.expeknow.store.ui.windows
 
-import android.net.Uri
-import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -24,7 +22,6 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bolt
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.rounded.OpenInNew
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -42,9 +39,7 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.platform.UriHandler
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -57,7 +52,7 @@ import com.expeknow.store.Constants
 import com.expeknow.store.R
 import com.expeknow.store.network.App
 import com.expeknow.store.widgets.TopBar
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
+import com.expeknow.store.widgets.small.EndCredits
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.options.IFramePlayerOptions
@@ -145,7 +140,7 @@ fun DetailsPage(navController: NavController, appData: App) {
                     AppStatsText(statText = "Difficulty: ")
                     repeat(appData.complexity!!) {
                         Icon(imageVector = Icons.Filled.Bolt, contentDescription = "",
-                            tint = colorResource(id = R.color.star_color),
+                            tint = colorResource(id = R.color.bolt_color),
                             modifier = Modifier.size(20.dp)
                         )
                     }
@@ -190,7 +185,7 @@ fun DetailsPage(navController: NavController, appData: App) {
             }
             
             val mUriHandler = LocalUriHandler.current 
-            Button(onClick = { mUriHandler.openUri("https://www.youtube.com/watch?v=GgS9Q8zVL2k") },
+            Button(onClick = { mUriHandler.openUri("https://youtu.be/_OwNFUaAXfk") },
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = Color.Black,
             ),
@@ -205,7 +200,9 @@ fun DetailsPage(navController: NavController, appData: App) {
                     Icon(imageVector = Icons.Rounded.OpenInNew,
                         contentDescription = "open in youtube ",
                         tint = Color.White,
-                        modifier = Modifier.size(18.dp).padding(start = 3.dp))
+                        modifier = Modifier
+                            .size(18.dp)
+                            .padding(start = 3.dp))
                 }
             }
 
@@ -214,18 +211,7 @@ fun DetailsPage(navController: NavController, appData: App) {
 //            AppListRow(appList = Apps(), heading = "Other Apps", navController = navController)
 
             //End credits
-            Column(modifier = Modifier
-                .padding(10.dp)
-                .fillMaxWidth(),
-            horizontalAlignment = CenterHorizontally,
-            verticalArrangement = Arrangement.Center) {
-                Text(text = "Expeknow Store",
-                    color =  Color.LightGray,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 12.sp,
-                    letterSpacing = 2.sp
-                )
-            }
+            EndCredits()
         }
     }
 }

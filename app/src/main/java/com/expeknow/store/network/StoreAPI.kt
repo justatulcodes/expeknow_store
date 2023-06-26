@@ -7,7 +7,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 class StoreAPI {
 
-    private val baseUrl = "https://expeknow-store-api.vercel.app/"
+    private val baseUrl = "https://script.google.com/macros/"
 
     private val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())

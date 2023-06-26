@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import com.expeknow.store.Constants
 import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
@@ -24,15 +25,17 @@ class StoreManager {
 
     init {
             getAllApps()
-            getFeaturedApps()
+//            getFeaturedApps()
     }
 
     fun getAllApps() {
         val service = StoreAPI().store.getAllApps()
+        Log.d("sucess", "entered function")
         service.enqueue(object : Callback<AppData>{
             override fun onResponse(call: Call<AppData>, response: Response<AppData>) {
                 if(response.isSuccessful) {
                     _applist_response.value = response.body()!!
+                    Log.d("sucess", response.errorBody().toString())
                 }else{
                     Log.d("storeapi error", response.errorBody().toString())
                 }
