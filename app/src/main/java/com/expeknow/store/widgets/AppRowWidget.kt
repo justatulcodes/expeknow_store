@@ -1,6 +1,7 @@
 package com.expeknow.store.widgets
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +18,7 @@ import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
@@ -85,6 +87,10 @@ fun AppListRowHeader(heading: String, modifier: Modifier = Modifier){
 fun CommonAppTemplate(navController: NavController, appData: App,
                       modifier: Modifier = Modifier
 ) {
+
+    val interactionSource = remember {
+        MutableInteractionSource()
+    }
     Box(
         modifier
             .width(100.dp)
@@ -101,28 +107,36 @@ fun CommonAppTemplate(navController: NavController, appData: App,
             )
         }
     }
-    Text(text = appData.appName!!,
-        modifier = modifier
-            .padding(horizontal = 6.dp, vertical = 5.dp)
-            .width(90.dp),
-        fontSize = 15.sp,
-        overflow = TextOverflow.Ellipsis,
-        maxLines = 1,
-    )
-    Row(modifier.padding(horizontal = 6.dp, vertical = 0.dp)) {
-        Text(text = "${appData.size} MB |",
-            fontSize = 12.sp,
-            fontFamily = FontFamily.SansSerif,
+    Column(modifier = Modifier.clickable(interactionSource = interactionSource, indication = null){
+        navController.navigate("details/${appData.appId}")
+    }) {
+        Text(text = appData.appName!!,
+            modifier = modifier
+                .padding(horizontal = 6.dp, vertical = 5.dp)
+                .width(90.dp),
+            fontSize = 15.sp,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 1,
         )
-        Icon(imageVector = Icons.Filled.Bolt,
-            contentDescription = "stars",
-            tint = colorResource(id = R.color.bolt_color),
-            modifier = Modifier.size(16.dp))
+        Row(
+            modifier
+                .padding(horizontal = 6.dp, vertical = 0.dp)
+                ) {
+            Text(text = "${appData.size} MB |",
+                fontSize = 12.sp,
+                fontFamily = FontFamily.SansSerif,
+            )
+            Icon(imageVector = Icons.Filled.Bolt,
+                contentDescription = "stars",
+                tint = colorResource(id = R.color.bolt_color),
+                modifier = Modifier.size(16.dp))
 
-        Text(text = "${appData.complexity}",
-            fontSize = 12.sp,
-            fontFamily = FontFamily.SansSerif,
-        )
+            Text(text = "${appData.complexity}",
+                fontSize = 12.sp,
+                fontFamily = FontFamily.SansSerif,
+            )
+        }
     }
+
 
 }

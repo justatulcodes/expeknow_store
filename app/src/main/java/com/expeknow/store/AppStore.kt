@@ -18,6 +18,7 @@ import com.expeknow.store.network.App
 import com.expeknow.store.network.StoreManager
 import com.expeknow.store.ui.windows.DetailsPage
 import com.expeknow.store.ui.windows.ProfilePage
+import com.expeknow.store.ui.windows.SearchResultsPage
 import com.expeknow.store.ui.windows.ShowScreenshotView
 import com.expeknow.store.ui.windows.Store
 import kotlinx.coroutines.*
@@ -61,6 +62,9 @@ fun AppStore() {
                 val encodedUrl = it.arguments?.getString("link")
                 ShowScreenshotView(navController = navController,
                     screenshotLink = encodedUrl!!)
+            }
+            composable(NavigationScreens.Search.route){
+                SearchResultsPage(navController = navController, storeManager = storeManager)
             }
         }
     }

@@ -9,6 +9,7 @@ class Constants {
     val store : String = "store"
     val details: String = "details/{id}"
     val profile: String = "profile"
+    val search: String = "search"
     val screenshot: String = "screenshotPage/{link}"
     val lightModeBackgroundColor = Color(0xFFFEFAFE)
     val darkModeBackgroundColor = Color(0xFF1C1B20)

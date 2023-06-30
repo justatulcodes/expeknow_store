@@ -5,5 +5,6 @@ sealed class NavigationScreens(val title: String, val route: String){
     object Details : NavigationScreens("Details", Constants().details)
     object Profile : NavigationScreens("Profile", Constants().profile)
     object Screenshot : NavigationScreens("Screenshot", Constants().screenshot)
+    object Search : NavigationScreens("Search", Constants().search)
 
 }

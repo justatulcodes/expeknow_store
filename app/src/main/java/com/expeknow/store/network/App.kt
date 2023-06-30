@@ -10,5 +10,6 @@ data class App(
     val screenshot: List<String>? = null,
     val size: Int? = null,
     val tagLine: String? = null,
-    val tags: List<String>? = null
+    val tags: List<String>? = null,
+    val isFeatured : Int? = null
 )
