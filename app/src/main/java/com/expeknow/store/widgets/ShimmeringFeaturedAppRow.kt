@@ -27,7 +27,7 @@ import com.expeknow.store.ui.utilities.shimmerEffect
 
 @Composable
 fun ShimmeringFeaturedAppRow() {
-        Column(modifier = Modifier.padding(top = 40.dp, bottom = 15.dp)) {
+        Column(modifier = Modifier.padding(top = 20.dp, bottom = 15.dp)) {
             Box(
                 modifier = Modifier
                     .height(45.dp)

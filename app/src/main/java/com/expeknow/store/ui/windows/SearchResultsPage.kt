@@ -1,10 +1,11 @@
 package com.expeknow.store.ui.windows
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -12,14 +13,17 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bolt
+import androidx.compose.material.icons.rounded.Apps
 import androidx.compose.material.icons.rounded.ArrowBackIos
+import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,6 +40,7 @@ import com.expeknow.store.network.StoreManager
 import com.expeknow.store.widgets.small.SearchBar
 import com.skydoves.landscapist.coil.CoilImage
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchResultsPage(navController: NavController, storeManager: StoreManager) {
 
@@ -43,7 +48,7 @@ fun SearchResultsPage(navController: NavController, storeManager: StoreManager) 
     val searchedApps = storeManager.searchedAppsList.value
 
 
-    Scaffold {
+    Scaffold (Modifier.fillMaxSize()) {
         Column(
             Modifier
                 .verticalScroll(scrollState)
@@ -63,19 +68,33 @@ fun SearchResultsPage(navController: NavController, storeManager: StoreManager) 
                     SearchBar(storeManager, navController)
                 }
             }
+            Column(Modifier.fillMaxSize()) {
+                if(searchedApps.isEmpty()){
+                    Column(
+                        Modifier
+                            .fillMaxHeight()
+                            .fillMaxWidth()
+                            .padding(vertical = 20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center) {
+                        Icon(imageVector = Icons.Rounded.Apps, contentDescription = "search",
+                        Modifier.size(30.dp))
+                        Text(text = "Search listed apps...",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Normal,
+                            modifier = Modifier.padding(top = 4.dp))
+                    }
+                }
+                else {
+                    Text(
+                        text = "${searchedApps.size} results found...",
+                        fontStyle = FontStyle.Italic,
+                        fontSize = 16.sp,
+                        modifier = Modifier.padding(10.dp)
+                    )
 
-            if(searchedApps.isEmpty()){
-                Text(text = "Search any app...",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold)
-            }
-            else{
-                Text(text = "${searchedApps.size} results found...",
-                    fontStyle = FontStyle.Italic,
-                    fontSize = 16.sp,
-                    modifier = Modifier.padding(10.dp))
-
-                SearchResultAppItem(appList = searchedApps, navController = navController)
+                    SearchResultAppItem(appList = searchedApps, navController = navController)
+                }
 
                 Divider(
                     thickness = 3.dp,
@@ -91,14 +110,21 @@ fun SearchResultsPage(navController: NavController, storeManager: StoreManager) 
                         }
                     }
                 }
-
                 if(suggestedApps.isNotEmpty()){
-                    Text(text = "Wanna try something new?",
+                    Text(text = "Or... try something new!",
                         fontStyle = FontStyle.Italic,
                         fontSize = 16.sp,
                         modifier = Modifier.padding(10.dp))
                     SearchResultAppItem(appList = suggestedApps, navController = navController)
-                }else{
+                }
+                else if(suggestedApps.isEmpty() && searchedApps.isEmpty()){
+                    Text(text = "Or... try something new!",
+                        fontStyle = FontStyle.Italic,
+                        fontSize = 16.sp,
+                        modifier = Modifier.padding(10.dp))
+                    SearchResultAppItem(appList = allApps.apps!!, navController = navController)
+                }
+                else{
                     Column(
                         Modifier
                             .fillMaxWidth()
@@ -115,6 +141,7 @@ fun SearchResultsPage(navController: NavController, storeManager: StoreManager) 
                     }
                 }
             }
+
     }
     }
 }
@@ -136,27 +163,29 @@ fun SearchResultAppItem(appList : List<App>, navController: NavController) {
                     contentDescription = "app icon",
                 )
             }
-            Column(modifier = Modifier.padding(end = 5.dp)) {
+            Column {
                 Text(text = appList[index].appName!!,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold)
                 Text(text = appList[index].tagLine!!,
-                    fontSize = 12.sp,)
+                    fontSize = 12.sp,
+                    lineHeight = 18.sp
+                )
                 Row {
-                    androidx.compose.material3.Text(
+                    Text(
                         text = "${appList[index].size} MB |",
                         fontSize = 14.sp,
                         fontFamily = FontFamily.SansSerif,
                         fontWeight = FontWeight.SemiBold,
                     )
-                    androidx.compose.material3.Icon(
+                    Icon(
                         imageVector = Icons.Filled.Bolt,
                         contentDescription = "stars",
                         tint = colorResource(id = R.color.bolt_color),
                         modifier = Modifier.size(20.dp)
                     )
 
-                    androidx.compose.material3.Text(
+                    Text(
                         text = "${appList[index].complexity}",
                         fontSize = 14.sp,
                         fontFamily = FontFamily.SansSerif,

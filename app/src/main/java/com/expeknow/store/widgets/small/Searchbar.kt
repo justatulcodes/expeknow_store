@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
@@ -50,18 +50,16 @@ fun SearchBar(storeManager: StoreManager, navController: NavController) {
         enabled = isEnabled,
         keyboardActions = KeyboardActions(
             onDone = {
-                Log.d("search result value", "on done Clikced on keybaprd")
                 storeManager.getSearchApps(inputText.text)
             }
         ),
         onValueChange = { value ->
             inputText = value
         },
-        textStyle = TextStyle(color = Color.Black, fontSize = 18.sp),
+        textStyle = TextStyle(fontSize = 18.sp),
         leadingIcon = {
             IconButton(
                 onClick = {
-                    Log.d("search result value", "search icon clicked")
                     val searchKey = inputText.text
                     storeManager.getSearchApps(searchKey)
                 }
@@ -97,8 +95,6 @@ fun SearchBar(storeManager: StoreManager, navController: NavController) {
         },
         singleLine = true,
         colors = TextFieldDefaults.textFieldColors(
-            textColor = Color.Black,
-            cursorColor = Color.Black,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent

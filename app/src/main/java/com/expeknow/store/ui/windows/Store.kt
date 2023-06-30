@@ -22,10 +22,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.Card
+import androidx.compose.material3.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material3.CardElevation
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -80,6 +81,10 @@ fun Store(scrollState: ScrollState, navController: NavController, storeManager :
         }
     }
 
+    val searchBarText = remember {
+        mutableStateOf("Loading store...")
+    }
+
     val interactionSource = remember {
         MutableInteractionSource()
     }
@@ -99,27 +104,28 @@ fun Store(scrollState: ScrollState, navController: NavController, storeManager :
 
             //Search bar row
             Row(
-                Modifier.padding(horizontal = 10.dp, vertical = 16.dp)
+                Modifier.padding(horizontal = 10.dp, vertical = 20.dp)
             ) {
                 Card(
                     shape = RoundedCornerShape(50.dp),
                     modifier = Modifier
                         .weight(1f)
                         .padding(end = 10.dp),
-                    elevation = 3.dp,
                 ) {
                     Row(
                         Modifier
                             .fillMaxWidth()
                             .padding(10.dp)
                             .clickable(interactionSource = interactionSource, indication = null)
-                            { navController.navigate(NavigationScreens.Search.route) },
+                            {   if(allApps.apps != null){
+                                navController.navigate(NavigationScreens.Search.route)
+                            } },
                             verticalAlignment = Alignment.CenterVertically) {
                         Icon(imageVector = Icons.Rounded.Search, contentDescription = "",
                             Modifier
                                 .size(35.dp)
                                 .padding(5.dp))
-                        Text(text = "Search apps...", color = Color.LightGray,
+                        Text(text = searchBarText.value, color = Color.LightGray,
                         fontSize = 16.sp, modifier = Modifier.fillMaxHeight())
                     }
                 }
@@ -128,7 +134,6 @@ fun Store(scrollState: ScrollState, navController: NavController, storeManager :
                     modifier = Modifier
                         .size(55.dp)
                         .padding(0.dp),
-                    elevation = 3.dp,
                     onClick = {
                                 navController.navigate(NavigationScreens.Profile.route)  }) {
                     Image(
@@ -140,8 +145,11 @@ fun Store(scrollState: ScrollState, navController: NavController, storeManager :
             }
 
             if(allApps.apps != null){
+
+                searchBarText.value = "Search Apps..."
+
                 //Developer's Choice
-                Row(Modifier.padding(top = 20.dp, bottom = 10.dp)) {
+                Row(Modifier.padding(top = 15.dp, bottom = 10.dp)) {
                     Column {
                         DevChoiceRowHeader(heading = "Expeknow's Choice",
                             modifier = Modifier.padding(top = 0.dp))
@@ -225,7 +233,6 @@ fun DevChoiceAppTemplate(navController: NavController, appData: App,
             },
         ) {
         Card(shape = RoundedCornerShape(15.dp),
-            elevation = 3.dp
         ) {
             CoilImage(imageModel = appData.appGraphic,
                 contentDescription = "",
@@ -269,7 +276,7 @@ fun DevChoiceAppTemplate(navController: NavController, appData: App,
 @Composable
 fun DevChoiceRowHeader(heading: String, modifier : Modifier) {
     Text(text = heading,
-        fontSize = 32.sp,
+        fontSize = 30.sp,
         fontFamily = FontFamily.SansSerif,
         fontWeight = FontWeight.Black,
         letterSpacing = 0.sp,
