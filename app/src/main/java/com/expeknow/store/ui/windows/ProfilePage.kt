@@ -1,45 +1,29 @@
 package com.expeknow.store.ui.windows
 
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.VectorDrawable
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.EnterTransition
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.scrollable
-import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowRight
-import androidx.compose.material.icons.filled.Call
-import androidx.compose.material.icons.filled.Download
-import androidx.compose.material.icons.outlined.ArrowBackIos
-import androidx.compose.material.icons.outlined.MoreVert
-import androidx.compose.material.icons.rounded.Call
-import androidx.compose.material.icons.rounded.Code
-import androidx.compose.material.icons.rounded.Mail
-import androidx.compose.material.icons.rounded.PhotoCamera
-import androidx.compose.material.icons.rounded.Work
 import androidx.compose.material3.Card
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -49,12 +33,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -67,13 +48,17 @@ import com.expeknow.store.widgets.TopBar
 fun ProfilePage(navController: NavController, scrollState: ScrollState) {
     Scaffold(
         topBar = {
-            TopBar(navController)
+            Surface (shadowElevation = 3.dp){
+                TopBar(navController)
+
+            }
         }
     ) {
         Column(
             Modifier
                 .padding(it)
                 .verticalScroll(scrollState)) {
+
 
             //profile Image
             Card(modifier = Modifier
@@ -89,15 +74,14 @@ fun ProfilePage(navController: NavController, scrollState: ScrollState) {
             //Name
             Text(text = "Atul Kumar",
             modifier = Modifier.padding(horizontal = 20.dp),
-            fontSize = 50.sp,
-            fontWeight = FontWeight.Black)
+            style = MaterialTheme.typography.displayLarge)
 
             //description
             Text(text = "A self-taught 21-year-old programmer striving to be an Android Developer." +
                     " I learn, Unlearn and Re-learn.",
                 Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
-            fontSize = 16.sp,
-            color = Color.Gray)
+            fontSize = 15.sp,
+            )
 
             //Social links
             Row (
@@ -165,8 +149,7 @@ fun ProfileDetailHeading(headingString: String, description: String) {
                     .clickable(interactionSource = interactionSource, indication = null) {
                         isExpanded = !isExpanded
                     },
-                fontSize = 35.sp,
-                fontWeight = FontWeight.Black)
+                style = MaterialTheme.typography.displayMedium)
             Icon(imageVector =  if(isExpanded) Icons.Filled.ArrowDropDown else Icons.Filled.ArrowRight,
                 contentDescription = "expand",
                 modifier = Modifier
@@ -176,13 +159,12 @@ fun ProfileDetailHeading(headingString: String, description: String) {
         ) {
             Text(text = "\n"+ description,
                 fontSize = 14.sp,
-                color = Color.Gray,
                 modifier = Modifier.padding(horizontal = 20.dp),
             )
         }
     }
 
-    Divider(modifier = Modifier.padding(vertical = 20.dp, horizontal = 30.dp))
+    Divider(modifier = Modifier.padding(vertical = 20.dp, horizontal = 0.dp))
 
 }
 

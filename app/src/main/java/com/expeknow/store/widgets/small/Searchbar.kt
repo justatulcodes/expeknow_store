@@ -1,16 +1,16 @@
 package com.expeknow.store.widgets.small
 
-import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -25,7 +25,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.expeknow.store.NavigationScreens
 import com.expeknow.store.network.App
 import com.expeknow.store.network.StoreManager
 
@@ -46,6 +45,9 @@ fun SearchBar(storeManager: StoreManager, navController: NavController) {
     }
 
     TextField(
+        colors = TextFieldDefaults.textFieldColors(
+            containerColor = MaterialTheme.colorScheme.background
+        ),
         value = inputText,
         enabled = isEnabled,
         keyboardActions = KeyboardActions(
@@ -56,7 +58,7 @@ fun SearchBar(storeManager: StoreManager, navController: NavController) {
         onValueChange = { value ->
             inputText = value
         },
-        textStyle = TextStyle(fontSize = 18.sp),
+        textStyle = TextStyle(fontSize = 16.sp),
         leadingIcon = {
             IconButton(
                 onClick = {
@@ -68,13 +70,13 @@ fun SearchBar(storeManager: StoreManager, navController: NavController) {
                     Icons.Default.Search,
                     contentDescription = "search",
                     modifier = Modifier
-                        .padding(start = 10.dp, end = 5.dp)
-                        .size(35.dp)
+                        .size(30.dp)
+                        .padding(start = 5.dp)
                 )
             }
 
         },
-        placeholder = { Text(text = "Search apps...", fontSize = 16.sp, color = Color.LightGray)},
+        placeholder = { Text(text = "Search apps...", fontSize = 16.sp)},
         trailingIcon = {
             if (inputText != TextFieldValue("")) {
                 IconButton(
@@ -87,17 +89,12 @@ fun SearchBar(storeManager: StoreManager, navController: NavController) {
                         Icons.Default.Close,
                         contentDescription = "erase entered text",
                         modifier = Modifier
-                            .padding(start = 15.dp, end = 5.dp)
                             .size(25.dp)
                     )
                 }
             }
         },
         singleLine = true,
-        colors = TextFieldDefaults.textFieldColors(
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-            disabledIndicatorColor = Color.Transparent
-        ),
+
     )
 }

@@ -3,11 +3,11 @@ package com.expeknow.store.ui.windows
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,17 +18,23 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bolt
+import androidx.compose.material.icons.rounded.Download
+import androidx.compose.material.icons.rounded.ExpandLess
+import androidx.compose.material.icons.rounded.ExpandMore
 import androidx.compose.material.icons.rounded.OpenInNew
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,7 +54,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
-import com.expeknow.store.Constants
 import com.expeknow.store.R
 import com.expeknow.store.network.App
 import com.expeknow.store.widgets.TopBar
@@ -70,13 +75,19 @@ fun DetailsPage(navController: NavController, appData: App) {
         MutableInteractionSource()
     }
 
-    Scaffold(topBar = { TopBar(navController) },
+    Scaffold(
+        topBar = {
+            Surface(shadowElevation = 3.dp) {
+                TopBar(navController)
+            }
+        },
     ) {
         Column(modifier = Modifier
             .padding(it)
-            .padding(5.dp)
+            .padding(horizontal = 5.dp)
             .verticalScroll(scrollState)) {
 
+            Spacer(modifier = Modifier.height(10.dp))
             //App logo, name, publisher and tags
             Row {
                     Card(
@@ -89,12 +100,11 @@ fun DetailsPage(navController: NavController, appData: App) {
                             },
                         shape = RoundedCornerShape(20.dp),
                         colors = CardDefaults.cardColors(
-                            containerColor = if(isSystemInDarkTheme()) Constants().darkModeBackgroundColor
-                                    else Constants().lightModeBackgroundColor
+//                            containerColor = Color.Transparent
                         ),
                     ) {
                         CoilImage(imageModel = appData.icon,
-                            contentDescription = "app logo")
+                            contentDescription = "app logo",)
                     }
                     Box(modifier = Modifier.align(CenterVertically)){
                         Column {
@@ -103,17 +113,16 @@ fun DetailsPage(navController: NavController, appData: App) {
                                 fontFamily = FontFamily.SansSerif,
                                 fontWeight = FontWeight.Bold,
                                 letterSpacing = 0.sp,
-                                modifier = Modifier.padding(start = 10.dp, bottom = 5.dp)
+                                modifier = Modifier.padding(start = 5.dp, bottom = 5.dp)
                             )
                             Text(text = "By Expeknow",
                                 fontSize = 14.sp,
                                 fontFamily = FontFamily.SansSerif,
                                 fontWeight = FontWeight.SemiBold,
                                 letterSpacing = 0.sp,
-                                color = Color.Gray,
-                                modifier = Modifier.padding(start = 10.dp, bottom = 10.dp)
+                                modifier = Modifier.padding(start = 5.dp, bottom = 10.dp)
                             )
-                            Row(modifier = Modifier.padding(start = 10.dp)) {
+                            Row {
                                 for(tag in appData.tags!!.listIterator()){
                                     AppTagCard(tag = tag,
                                         modifier = Modifier.padding(horizontal = 5.dp))
@@ -149,22 +158,28 @@ fun DetailsPage(navController: NavController, appData: App) {
             }
 
             //Download button
-            Button(onClick = { },
+
+            var isDownloading by remember {
+                mutableStateOf(false)
+            }
+            Button(onClick = { isDownloading = !isDownloading },
                 modifier = Modifier
                     .padding(15.dp)
                     .fillMaxWidth(),
             shape = RoundedCornerShape(10.dp),
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.Black,
-            ),
+//            colors = ButtonDefaults.buttonColors(
+//                backgroundColor = Color.Black,
+//            ),
             ) {
-                Text(text = "Download",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    color = Color.White,
-                    modifier = Modifier.padding(3.dp)
-                )
+                Icon(imageVector = Icons.Rounded.Download, contentDescription = "",)
+                AnimatedVisibility(visible = isDownloading) {
+                    Text(text = "Downloading",
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(horizontal = 3.dp)
+                    )
+                }
             }
 
             //App screenshots
@@ -186,9 +201,9 @@ fun DetailsPage(navController: NavController, appData: App) {
             
             val mUriHandler = LocalUriHandler.current 
             Button(onClick = { mUriHandler.openUri("https://youtu.be/_OwNFUaAXfk") },
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.Black,
-            ),
+//            colors = ButtonDefaults.buttonColors(
+//                backgroundColor = Color.Black,
+//            ),
             shape = RoundedCornerShape(10.dp),
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
             ) {
@@ -196,10 +211,9 @@ fun DetailsPage(navController: NavController, appData: App) {
                 verticalAlignment = CenterVertically,
                 horizontalArrangement = Arrangement.Center) {
                     Text(text = "Open in youtube", fontSize = 15.sp,
-                    color = Color.White)
+                    )
                     Icon(imageVector = Icons.Rounded.OpenInNew,
                         contentDescription = "open in youtube ",
-                        tint = Color.White,
                         modifier = Modifier
                             .size(18.dp)
                             .padding(start = 3.dp))
@@ -227,15 +241,15 @@ fun DescriptionBox(appData: App) {
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Card(shape = RoundedCornerShape(20.dp),
+            modifier = Modifier.padding(2.dp),
             colors = CardDefaults.cardColors(
                 containerColor = Color.Transparent
             )
         ) {
             Text(text = appData.tagLine!!,
                 fontSize = 14.sp,
-                color = Color.Gray,
                 modifier = Modifier
-                    .padding(start = 15.dp, end = 15.dp, top = 15.dp)
+                    .padding(10.dp)
                     .clickable(interactionSource = interactionSource, indication = null) {
                         isExpanded = !isExpanded
                     }
@@ -244,30 +258,36 @@ fun DescriptionBox(appData: App) {
             ) {
                 Text(text = "\n"+appData.description!!,
                     fontSize = 14.sp,
-                    color = Color.Gray,
-                    modifier = Modifier.padding(start = 15.dp, end = 15.dp),
+                    modifier = Modifier.padding(start = 10.dp, end = 10.dp, bottom = 5.dp),
                 )
             }
         }
 
         Button(onClick = { isExpanded = !isExpanded },
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.Transparent,
-                contentColor = Color.DarkGray,
+                containerColor = MaterialTheme.colorScheme.background,
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
             ),
-            elevation = ButtonDefaults.elevation(
-                defaultElevation = 0.dp,
-                pressedElevation = 0.dp,
-                hoveredElevation = 0.dp,
-                focusedElevation = 0.dp
-            ),
+            elevation = ButtonDefaults.buttonElevation(0.dp)
         ) {
-            if(isExpanded)
-                Text(text = "Read Less...", fontSize = 13.sp, color = Color.Gray,
+            if(isExpanded){
+                Text(text = "Read Less", fontSize = 13.sp,
                     fontWeight = FontWeight.SemiBold)
-            else
-                Text(text = "Read More...", fontSize = 13.sp, color = Color.Gray,
+                Icon(imageVector = Icons.Rounded.ExpandLess, contentDescription = "",
+                    Modifier
+                        .size(22.dp)
+                        .padding(3.dp))
+            }
+
+            else{
+                Text(text = "Read More", fontSize = 13.sp,
                     fontWeight = FontWeight.SemiBold)
+                Icon(imageVector = Icons.Rounded.ExpandMore, contentDescription = "",
+                    Modifier
+                        .size(22.dp)
+                        .padding(3.dp))
+            }
+
         }
     }
 
@@ -278,16 +298,11 @@ fun AppTagCard(tag: String, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(5.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.LightGray,
-            contentColor = Color.DarkGray
-        )
     ) {
         Text(text = tag,
             fontSize = 10.sp,
             modifier = Modifier.padding(3.dp))
-    }
-}
+    } }
 
 @Composable
 fun VideoCard(videoId: String) {
@@ -343,9 +358,9 @@ fun AppStatsText(statText: String){
             Text(text = statText,
                 fontSize = 14.sp,
                 fontFamily = FontFamily.SansSerif,
-                color = Color.Gray,
             )
         }
 
     }
 }
+

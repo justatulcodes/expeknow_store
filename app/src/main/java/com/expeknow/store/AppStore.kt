@@ -4,11 +4,10 @@ package com.expeknow.store
 import android.annotation.SuppressLint
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material.Scaffold
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -25,7 +24,7 @@ import kotlinx.coroutines.*
 
 
 @OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun AppStore() {
 
@@ -37,9 +36,13 @@ fun AppStore() {
     Scaffold {
         NavHost(navController = navController,
             startDestination = NavigationScreens.Store.route ) {
+
+            // Route to go to home page
             composable(NavigationScreens.Store.route) {
                 Store(scrollState = scrollState, navController = navController, storeManager = storeManager)
             }
+
+            // Route to go to details page
             composable(NavigationScreens.Details.route,
             arguments = listOf(navArgument("id"){type= NavType.IntType})
             ){
@@ -53,9 +56,13 @@ fun AppStore() {
                 }
                 DetailsPage(navController = navController, appData = appData)
             }
+
+            // Route to go in Profile page
             composable(NavigationScreens.Profile.route){
                 ProfilePage(navController = navController, scrollState)
             }
+
+            // Route to go in screenshot page
             composable(NavigationScreens.Screenshot.route,
             arguments = listOf(navArgument("link"){type= NavType.StringType})
             ){
@@ -63,6 +70,8 @@ fun AppStore() {
                 ShowScreenshotView(navController = navController,
                     screenshotLink = encodedUrl!!)
             }
+
+            // Route to go in search page
             composable(NavigationScreens.Search.route){
                 SearchResultsPage(navController = navController, storeManager = storeManager)
             }

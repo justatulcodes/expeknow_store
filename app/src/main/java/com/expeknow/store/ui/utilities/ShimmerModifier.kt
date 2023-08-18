@@ -22,19 +22,19 @@ fun Modifier.shimmerEffect(): Modifier = composed {
     var size by remember {
         mutableStateOf(IntSize.Zero)
     }
-    val transition = rememberInfiniteTransition()
+    val transition = rememberInfiniteTransition(label = "")
     val startOffsetX by transition.animateFloat(
         initialValue = -2 * size.width.toFloat(),
         targetValue = 2 * size.width.toFloat(),
         animationSpec = infiniteRepeatable(
             animation = tween(1000)
-        )
+        ), label = ""
     )
 
     val lightModeColor = listOf(
-        Color(0xFFE5DFEA),
-        Color(0xE0D1D1D1),
-        Color(0xFFE5DFEA),
+        Color(0xFFECEAEF),
+        Color(0xE0DAD9D9),
+        Color(0xFFECEAEF),
     )
     val darkModeColor = listOf(
         Color(0xFF3D3C3C),

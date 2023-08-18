@@ -1,5 +1,6 @@
 package com.expeknow.store.widgets
 
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -13,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
 /**
@@ -23,6 +25,7 @@ import androidx.navigation.NavController
 fun TopBar(navController: NavController) {
     CenterAlignedTopAppBar(
         title = { Text(text = "") },
+        modifier = Modifier.height(50.dp),
         navigationIcon = {
             IconButton(
                 onClick = {navController.popBackStack()} ) {
@@ -30,8 +33,7 @@ fun TopBar(navController: NavController) {
                     imageVector = Icons.Outlined.ArrowBackIos,
                     contentDescription = "",
                     modifier = Modifier
-                        .size(25.dp)
-                        .padding(start = 8.dp)
+                        .size(18.dp)
                 )
             }
         },

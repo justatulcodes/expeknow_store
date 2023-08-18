@@ -11,11 +11,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bolt
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -23,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -70,10 +71,7 @@ fun AppListRow(appList: List<App>, heading: String, navController: NavController
 @Composable
 fun AppListRowHeader(heading: String, modifier: Modifier = Modifier){
     Text(text = heading,
-        fontSize = 26.sp,
-        fontFamily = FontFamily.SansSerif,
-        fontWeight = FontWeight.Black,
-        letterSpacing = 0.sp,
+        style = MaterialTheme.typography.displaySmall,
         modifier = modifier.padding(start = 10.dp, bottom = 6.dp, top = 8.dp)
     )
 }
@@ -82,7 +80,7 @@ fun AppListRowHeader(heading: String, modifier: Modifier = Modifier){
 /**
  * Common app square icon template.
  */
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CommonAppTemplate(navController: NavController, appData: App,
                       modifier: Modifier = Modifier
@@ -99,7 +97,7 @@ fun CommonAppTemplate(navController: NavController, appData: App,
                 navController.navigate("details/${appData.appId}")
             }) {
         Card(shape = RoundedCornerShape(20.dp),
-            elevation = 3.dp,
+            elevation = CardDefaults.cardElevation(3.dp),
             onClick = { navController.navigate("details/${appData.appId}")}) {
             CoilImage(imageModel = appData.icon,
                 contentDescription = "",

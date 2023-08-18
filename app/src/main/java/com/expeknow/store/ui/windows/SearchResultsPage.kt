@@ -1,5 +1,6 @@
 package com.expeknow.store.ui.windows
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,21 +13,23 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Card
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material.icons.rounded.Apps
 import androidx.compose.material.icons.rounded.ArrowBackIos
-import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
@@ -58,16 +61,23 @@ fun SearchResultsPage(navController: NavController, storeManager: StoreManager) 
             //search bar
             Row (modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)){
                 IconButton(onClick = {navController.popBackStack()}) {
-                    Icon(imageVector = Icons.Rounded.ArrowBackIos, "")
+                    Icon(imageVector = Icons.Rounded.ArrowBackIos, "",
+                        Modifier.size(20.dp))
                 }
                 Card(shape = RoundedCornerShape(50.dp),
                     modifier = Modifier
                         .weight(1f)
                         .padding(end = 5.dp),
-                    elevation = 3.dp) {
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.Transparent
+                    ),
+                    border = BorderStroke(
+                        1.dp, color = MaterialTheme.colorScheme.outlineVariant
+                    ),) {
                     SearchBar(storeManager, navController)
                 }
             }
+
             Column(Modifier.fillMaxSize()) {
                 if(searchedApps.isEmpty()){
                     Column(
@@ -77,10 +87,10 @@ fun SearchResultsPage(navController: NavController, storeManager: StoreManager) 
                             .padding(vertical = 20.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center) {
-                        Icon(imageVector = Icons.Rounded.Apps, contentDescription = "search",
-                        Modifier.size(30.dp))
+                        Icon(imageVector = Icons.Rounded.Apps, contentDescription = "apps",
+                        Modifier.size(35.dp))
                         Text(text = "Search listed apps...",
-                            fontSize = 16.sp,
+                            fontSize = 14.sp,
                             fontWeight = FontWeight.Normal,
                             modifier = Modifier.padding(top = 4.dp))
                     }
@@ -97,7 +107,7 @@ fun SearchResultsPage(navController: NavController, storeManager: StoreManager) 
                 }
 
                 Divider(
-                    thickness = 3.dp,
+                    thickness = 0.5.dp,
                     modifier = Modifier.padding(10.dp)
                 )
 
@@ -132,7 +142,7 @@ fun SearchResultsPage(navController: NavController, storeManager: StoreManager) 
                         horizontalAlignment = Alignment.CenterHorizontally) {
                         Icon(imageVector = Icons.Filled.Bolt, contentDescription = "expeknow logo",
                             modifier = Modifier
-                                .size(60.dp)
+                                .size(50.dp)
                                 .padding(5.dp), tint = colorResource(id = R.color.bolt_color))
                         Text(text = "That's all we have for today :)",
                             fontSize = 14.sp,
@@ -155,7 +165,10 @@ fun SearchResultAppItem(appList : List<App>, navController: NavController) {
                 navController.navigate("details/${appList[index].appId}")
             }) {
             Card(shape = RoundedCornerShape(10.dp),
-                elevation = 5.dp,
+                elevation = CardDefaults.cardElevation(3.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color.White
+                ),
                 modifier = Modifier
                     .size(80.dp)
                     .padding(10.dp)) {
