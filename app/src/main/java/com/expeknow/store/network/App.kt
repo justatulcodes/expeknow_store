@@ -1,5 +1,6 @@
 package com.expeknow.store.network
 
+// schema for api response objects
 data class App(
     val appId : Int? = null,
     val appGraphic: String? = null,

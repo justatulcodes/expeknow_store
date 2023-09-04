@@ -30,7 +30,9 @@ fun AppStore() {
 
     val navController = rememberNavController()
     val scrollState : ScrollState = rememberScrollState()
-    val storeManager = remember { StoreManager() }
+    val storeManager =   StoreManager()
+
+
 
 
     Scaffold {

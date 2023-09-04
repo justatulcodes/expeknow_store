@@ -36,13 +36,10 @@ class StoreManager {
             _suggestedApps
         }
 
-
-
     init {
             getAllApps()
 //            getFeaturedApps()
     }
-
 
     fun getSearchApps(searchKey: String){
         val allAppsList = _applist_response.value.apps
@@ -76,18 +73,18 @@ class StoreManager {
 
     fun getAllApps() {
         val service = StoreAPI().store.getAllApps()
-        Log.d("sucess", "entered function")
+        Log.d("success", "entered function for get all apps")
         service.enqueue(object : Callback<AppData>{
             override fun onResponse(call: Call<AppData>, response: Response<AppData>) {
                 if(response.isSuccessful) {
                     _applist_response.value = response.body()!!
-                    Log.d("sucess", response.errorBody().toString())
+                    Log.d("success", response.errorBody().toString())
                 }else{
-                    Log.d("storeapi error", response.errorBody().toString())
+                    Log.d("storeApi error", response.errorBody().toString())
                 }
             }
             override fun onFailure(call: Call<AppData>, t: Throwable) {
-                Log.d("storeapi error", t.message.toString())
+                Log.d("storeApi error", t.message.toString())
             }
 
         })
